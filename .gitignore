@@ -1,4 +1,7 @@
 .metadata
+.classpath
+.gitignore
+.project
 bin/
 tmp/
 *.tmp
