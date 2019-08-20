@@ -1,6 +1,6 @@
-package ch01.ex07;
+package ch01.ex09;
 
-public class ImproveFibonacci {
+public class Fibonacci {
 	static final int MAX_INDEX = 9;
 	public static void main(String[] args) {
 		/**
@@ -9,17 +9,16 @@ public class ImproveFibonacci {
 		 * */
 		int lo = 1;
 		int hi = 1;
-		String mark;
-		System.out.println("1: " + lo);
-		for(int i=MAX_INDEX; i>= 2; i--) {
-			if(hi % 2 ==0) {
-				mark = "*";
-			} else {
-				mark = "";
-			}
-			System.out.println( (MAX_INDEX - ( i - 2 ) ) +  ": " + hi + mark);
+		int[] array = new int[MAX_INDEX];
+		array[0] = lo;
+		array[1] = hi;
+		for(int i=2; i< MAX_INDEX; i++) {
 			hi = lo + hi;// new hi
 			lo = hi - lo;// new "lo" is calculated (sum ^ old "lo")
+			array[i] = hi;
+		}
+		for(int i=0;i<array.length;i++) {
+			System.out.println( (i +1) + ": " + array[i]);
 		}
 	}
 }
