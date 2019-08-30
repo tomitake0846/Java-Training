@@ -6,11 +6,21 @@ public class LinkedList {
 	private static LinkedList head;
 	private static LinkedList tail;
 
+	static {
+		LinkedList item = new LinkedList();
+		LinkedList.head = item;
+		LinkedList.tail = item;
+	}
+
 	public void add(Object value) {
-		this.value = value;
-		LinkedList next = new LinkedList();
-		this.next = next;
-		LinkedList.tail = next;
+		/*create a new LInkedList instance and set the value.*/
+		LinkedList item = new LinkedList();
+		item.value = value;
+
+		/*set "next" for current" tail"*/
+		LinkedList.tail.next = item;
+		LinkedList.tail = item;
+		System.out.println(item.toString());
 	}
 	public Object remove() {
 		Object object = head.getValue();
@@ -22,18 +32,30 @@ public class LinkedList {
 	}
 
 	public boolean contains (Object value) {
-		LinkedList dummy =
+		LinkedList dummy = LinkedList.head;
+		while(dummy.hasMoreElement()) {
+			Object val = dummy.getValue();
+			if(val.equals(value) ) {
+				return true;
+			}
+			dummy = dummy.next;
+		}
+		return false;
 	}
 
+	/*if LInkedList has "next" . it returns true.*/
 	public boolean hasMoreElement() {
-		if (this.next == null) {
-			return false;
-		} else {
-			return true;
-		}
+		return this.next != null;
 	}
-	public LinkedList clone(LinkedList target) {
-		LinkedList dummy = new LinkedList();
-		dummy.value = target.value;
+
+	public String toString() {
+		StringBuilder builder = new StringBuilder("[");
+		LinkedList dummy = LinkedList.head;
+		while(dummy.hasMoreElement()) {
+			builder.append(dummy.getValue() + " ");
+			dummy = dummy.next;
+		}
+		builder.append("]");
+		return builder.toString();
 	}
 }
