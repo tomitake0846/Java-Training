@@ -14,17 +14,15 @@ class LinkedListTest {
 
 		list.add(10);
 
-		assertTrue(list.hasMoreElement());
-
-		p(list);
-
-		list.remove();
-
-		p(list);
+		assertEquals(LinkedList.getNode(1).getValue() , 10);
 
 		assertFalse(list.hasMoreElement());
-	}
-	private void p(LinkedList list) {
-		System.out.println(list.toString());
+
+		list.add(20);
+		assertEquals(LinkedList.getNode(2).getValue() , 20);
+
+		assertNull(LinkedList.getNode(3));
+		assertNull(LinkedList.getNode(-1));
+
 	}
 }
