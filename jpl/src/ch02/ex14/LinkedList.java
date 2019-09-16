@@ -1,4 +1,4 @@
-package ch02.ex11;
+package ch02.ex14;
 
 public class LinkedList {
 	private Object value;
@@ -6,6 +6,7 @@ public class LinkedList {
 	private static LinkedList HEAD;
 	private static LinkedList TAIL;
 
+	/*LinkedList's field has already been private.*/
 	public LinkedList(Object value) {
 		add(value);
 	}
@@ -64,5 +65,4 @@ public class LinkedList {
 	private boolean hasMoreElement() {
 		return this.next != null;
 	}
-
 }

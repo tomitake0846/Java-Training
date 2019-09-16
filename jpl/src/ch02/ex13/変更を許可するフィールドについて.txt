@@ -1,0 +1,3 @@
+値が変化するspeed,angle,ownerにはsetterを設ける。
+idは、Vehicleクラスの識別に用いる一意の値であるため変更は許可されない。
+そのため、setterは設けない。
