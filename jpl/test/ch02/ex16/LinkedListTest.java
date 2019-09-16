@@ -1,4 +1,4 @@
-package ch02.ex11;
+package ch02.ex16;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,13 +7,16 @@ import org.junit.jupiter.api.Test;
 class LinkedListTest {
 
 	@Test
-	void toStringTest() {
+	void countTest() {
 		LinkedList list = new LinkedList();
-		assertEquals("[]",list.toString());
-		list.add(0);
+		assertEquals(0,list.count());
+
 		list.add(1);
+		assertEquals(1,list.count());
+
 		list.add(2);
-		assertEquals("[0,1,2,]",list.toString());
+		list.add(3);
+		assertEquals(3,list.count());
 	}
 
 }
