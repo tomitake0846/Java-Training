@@ -24,7 +24,7 @@ public class Vehicle {
 	public void setSpeed(float speed) {
 		//if speed smaller than 0, speed substitutes 0.
 		if (speed <= 0) {
-			speed = 0;
+			this.speed = 0;
 		} else {
 			this.speed = speed;
 		}
@@ -34,9 +34,9 @@ public class Vehicle {
 		if(angle < 0) {
 			angle = 0;
 		}
-		//if angle grater than 360, angle substitutes 360.
+		//if angle grater than 360, angle substitutes angle % 360.
 		if(360 < angle) {
-			angle = 360;
+			angle = angle % 360;
 		}
 		this.angle = angle;
 	}

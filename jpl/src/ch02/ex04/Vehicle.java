@@ -25,7 +25,7 @@ public class Vehicle {
 	public void setSpeed(float speed) {
 		//if speed smaller than 0, speed substitutes 0.
 		if (speed <= 0) {
-			speed = 0;
+			this.speed = 0;
 		} else {
 			this.speed = speed;
 		}

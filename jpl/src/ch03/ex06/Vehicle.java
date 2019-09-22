@@ -1,4 +1,4 @@
-package ch02.ex09;
+package ch03.ex06;
 
 public class Vehicle {
 	private float speed;
@@ -6,22 +6,18 @@ public class Vehicle {
 	private String owner;
 	private int id;
 	private static int nextId = 0;
+	private EnergySource energy;
 
-	public Vehicle(String owner) {
-		this.speed = 0;
-		this.angle = 0;
+	/*Vehicle's field has already been private.*/
+	public Vehicle(String owner,EnergySource energy) {
+		_init(energy);
 		this.owner = owner;
-		id = nextId;
-		Vehicle.nextId++;
 	}
-	public Vehicle() {
-		this.speed = 0;
-		this.angle = 0;
-		id = nextId;
-		Vehicle.nextId++;
+	public Vehicle(EnergySource energy) {
+		_init(energy);
 	}
 
-	public void setSpeed(float speed) {
+	public void changeSpeed(float speed) {
 		//if speed smaller than 0, speed substitutes 0.
 		if (speed <= 0) {
 			this.speed = 0;
@@ -29,6 +25,22 @@ public class Vehicle {
 			this.speed = speed;
 		}
 	}
+
+	public boolean start() {
+		if(this.energy.empty()) {
+			System.out.println("Energy is empty.");
+			System.out.println("Please recharge energy!");
+			return false;
+		} else {
+			System.out.println("start!");
+			return true;
+		}
+	}
+
+	public void stop() {
+		this.speed = 0;
+	}
+
 	public void setAngle(int angle) {
 		//if angle smaller than 0. angle substitutes 0.
 		if(angle < 0) {
@@ -52,7 +64,7 @@ public class Vehicle {
 		sb.append(getSpeed());
 		sb.append("\nangle : ");
 		sb.append(getAngle());
-		sb.append("\nid :" );
+		sb.append("\nid : " );
 		sb.append(getId());
 		sb.append("\n");
 		return sb.toString();
@@ -72,5 +84,16 @@ public class Vehicle {
 	}
 	public static int getMaximumId() {
 		return nextId - 1;
+	}
+	public EnergySource getEnergy() {
+		return this.energy;
+	}
+
+	private void _init(EnergySource energy) {
+		this.speed = 0;
+		this.angle = 0;
+		id = nextId;
+		this.energy = energy;
+		Vehicle.nextId++;
 	}
 }

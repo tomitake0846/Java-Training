@@ -1,4 +1,4 @@
-package ch02.ex09;
+package ch02.ex13;
 
 public class Vehicle {
 	private float speed;
@@ -7,6 +7,7 @@ public class Vehicle {
 	private int id;
 	private static int nextId = 0;
 
+	/*Vehicle's field has already been private.*/
 	public Vehicle(String owner) {
 		this.speed = 0;
 		this.angle = 0;
@@ -36,7 +37,7 @@ public class Vehicle {
 		}
 		//if angle grater than 360, angle substitutes 360.
 		if(360 < angle) {
-			angle = 360;
+			angle = angle % 360;
 		}
 		this.angle = angle;
 	}
@@ -52,7 +53,7 @@ public class Vehicle {
 		sb.append(getSpeed());
 		sb.append("\nangle : ");
 		sb.append(getAngle());
-		sb.append("\nid :" );
+		sb.append("\nid : " );
 		sb.append(getId());
 		sb.append("\n");
 		return sb.toString();

@@ -1,4 +1,4 @@
-package ch02.ex09;
+package ch02.ex18;
 
 public class Vehicle {
 	private float speed;
@@ -6,6 +6,17 @@ public class Vehicle {
 	private String owner;
 	private int id;
 	private static int nextId = 0;
+
+	public static void main(String[] args) throws IllegalAccessException {
+
+		if(args.length <= 0) {
+			throw new IllegalAccessException();
+		}
+
+		Vehicle v  = new Vehicle();
+		v.setOwner(args[0]);
+		System.out.println(v);
+	}
 
 	public Vehicle(String owner) {
 		this.speed = 0;
@@ -69,8 +80,5 @@ public class Vehicle {
 	}
 	public int getId() {
 		return id;
-	}
-	public static int getMaximumId() {
-		return nextId - 1;
 	}
 }
