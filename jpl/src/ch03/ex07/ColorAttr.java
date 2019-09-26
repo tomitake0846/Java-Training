@@ -56,6 +56,6 @@ public class ColorAttr extends Attr{
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(this);
+		return Objects.hashCode(getColor());
 	}
 }
