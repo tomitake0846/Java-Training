@@ -80,7 +80,7 @@ public class Vehicle{
 		return nextId - 1;
 	}
 
-	protected Object clone(){
+	public Object clone(){
 		Vehicle v = new Vehicle();
 		v.setAngle(this.getAngle());
 		v.changeSpeed(this.getSpeed());
