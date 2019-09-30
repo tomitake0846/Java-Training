@@ -1,6 +1,6 @@
 package ch03.ex08;
 
-public class Vehicle implements Cloneable{
+public class Vehicle{
 	private float speed;
 	private int angle;
 	private String owner;
@@ -78,5 +78,12 @@ public class Vehicle implements Cloneable{
 	}
 	public static int getMaximumId() {
 		return nextId - 1;
+	}
+
+	protected Object clone(){
+		Vehicle v = new Vehicle();
+		v.setAngle(this.getAngle());
+		v.changeSpeed(this.getSpeed());
+		return v;
 	}
 }
