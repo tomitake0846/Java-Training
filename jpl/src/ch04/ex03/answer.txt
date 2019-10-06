@@ -1,0 +1,3 @@
+LinkedListはインターフェス化すべきではない。
+LinkedListは、Listというデータ構造の一種である。
+Listをインターフェース化し、LinkedListがListインターフェースを実装するよう設計すべきである。
