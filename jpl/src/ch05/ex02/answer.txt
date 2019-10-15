@@ -1,0 +1,7 @@
+BankAccountは、取引記録であるActionのコレクションを管理している。
+Historyは、上記ActionのコレクションのAdapterとして設計。
+BankAccountあってのHistoryなので、ネストクラスとして宣言した。
+
+Historyは、以下の理由からstaticで宣言した。
+・BankAccountの値を参照しない
+・BankAccountクラスの存在を前提としたクラスであるため
