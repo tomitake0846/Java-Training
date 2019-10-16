@@ -2,23 +2,25 @@ package dc1_2;
 
 import java.awt.MenuBar;
 
-public class DigitalClock{
-	private MyFrame frame;
-	private ClockCanvas canvas;
-	private MenuBar menubar;
-	public DigitalClock(String title,int width,int height) {
-		this.frame = new MyFrame(title,width,height);
-		this.canvas = new ClockCanvas(width,height);
-		this.menubar = new MenubarCreator().getMenuber();
-		this.frame.add(canvas);
-		this.frame.setMenuBar(menubar);
-		this.frame.addWindowListener(ButtonFactory.getButton(ButtonType.CLOSE));
+import dc1_2.Menu.MyMenubar;
 
+public class DigitalClock{
+	public static final MyFrame frame;
+	public static final ClockCanvas canvas;
+	public static final MenuBar menubar;
+
+	static {
+		frame = new MyFrame(Config.TITLE,Config.WIDTH,Config.HEIGHT);
+		canvas = new ClockCanvas(Config.WIDTH,Config.HEIGHT);
+		menubar = new MyMenubar();
+		frame.add(canvas);
+		frame.setMenuBar(menubar);
+		frame.addWindowListener(ButtonFactory.getCloseButton(DigitalClock.frame));
 	}
 
 	public void run() {
 		while(true) {
-			this.canvas.repaint();
+			DigitalClock.canvas.repaint();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {

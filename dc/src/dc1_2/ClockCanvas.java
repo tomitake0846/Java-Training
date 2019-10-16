@@ -11,9 +11,6 @@ import java.time.format.DateTimeFormatter;
 public class ClockCanvas extends Canvas{
 
 	private DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
-	private String fontFamily = "Serif";
-	private int fontName = Font.ITALIC;
-	private int fontSize = 32;
 
 	public ClockCanvas(int width,int height) {
 		setSize(width,height);
@@ -23,23 +20,11 @@ public class ClockCanvas extends Canvas{
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
-		Font font = new Font(fontFamily,this.fontName,fontSize);
+		Font font = new Font(Config.FONT_FAMILY,Config.FONT_NAME,Config.FONT_SIZE);
 		String drawString = LocalDateTime.now().format(f);
 		FontMetrics metrics = g.getFontMetrics(font);
 
 		g.setFont(font);
 		g.drawString(drawString, metrics.stringWidth(drawString) , getHeight() / 2);
-	}
-
-	public void setFontFamily(String fontFamily) {
-		this.fontFamily = fontFamily;
-	}
-
-	public void setFontName(int fontName) {
-		this.fontName = fontName;
-	}
-
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
 	}
 }
