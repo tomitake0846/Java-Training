@@ -31,8 +31,6 @@ public class DialogFactory {
 				g.drawString("Font Size", 20, 160);
 				Dimension d = fontFamilyList.getPreferredSize();
 				fontFamilyList.setBounds(120, 100, d.width, d.height);
-				System.out.println("w :"+fontFamilyList.getPreferredSize());
-				System.out.println("h :"+fontFamilyList.getHeight());
 			}
 			public List getFontFamilyList(int rows) {
 				List list = new List(rows);

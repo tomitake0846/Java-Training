@@ -23,8 +23,9 @@ public class ClockCanvas extends Canvas{
 		Font font = new Font(Config.FONT_FAMILY,Config.FONT_NAME,Config.FONT_SIZE);
 		String drawString = LocalDateTime.now().format(f);
 		FontMetrics metrics = g.getFontMetrics(font);
-
+		int x = (getWidth() - metrics.stringWidth(drawString)) / 2 ;
+		int y = getHeight() / 2;
 		g.setFont(font);
-		g.drawString(drawString, metrics.stringWidth(drawString) , getHeight() / 2);
+		g.drawString(drawString,x , y);
 	}
 }
