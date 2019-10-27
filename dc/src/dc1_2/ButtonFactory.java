@@ -8,17 +8,21 @@ public class ButtonFactory {
 	public static WindowAdapter getButton(ButtonType type) {
 
 		switch(type) {
-			case CLOSE : return createCloseButton();
 			default : throw new IllegalArgumentException();
 		}
 
 	}
 
-	private static WindowAdapter createCloseButton() {
+	public static WindowAdapter getCloseButton(Close closeItem) {
 		return new WindowAdapter() {
+			private Close close;
+			{
+				this.close = closeItem;
+			}
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+				this.close.close();
 			}
 		};
 	}
+
 }

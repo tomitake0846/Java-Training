@@ -1,6 +1,6 @@
 package dc1_2;
 
 public enum ButtonType {
-	CLOSE;
-
+	CLOSE,
+	SYSTEM_EXIT;
 }
