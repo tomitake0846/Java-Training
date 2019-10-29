@@ -11,16 +11,19 @@ import java.time.format.DateTimeFormatter;
 public class ClockCanvas extends Canvas{
 
 	private DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
+	private PropertyInfo propertyInfo;
 
 	public ClockCanvas(int width,int height) {
 		setSize(width,height);
 		setBackground(Color.black);
-
+		this.propertyInfo = PropertyInfo.instance;
 	}
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(Color.WHITE);
-		Font font = new Font(Config.FONT_FAMILY,Config.FONT_NAME,Config.FONT_SIZE);
+		Font font = new Font(this.propertyInfo.getFontFamily(),
+							 this.propertyInfo.getFontName(),
+							 this.propertyInfo.getFontSize());
 		String drawString = LocalDateTime.now().format(f);
 		FontMetrics metrics = g.getFontMetrics(font);
 		int x = (getWidth() - metrics.stringWidth(drawString)) / 2 ;

@@ -1,16 +1,24 @@
 package dc1_2;
 
+import java.awt.Button;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class ButtonFactory {
 
-	public static WindowAdapter getButton(ButtonType type) {
+	public static Button getButton(ButtonType type) {
 
 		switch(type) {
+		case PULLDOWN_LIST : return getPullDownListButton();
 			default : throw new IllegalArgumentException();
 		}
 
+	}
+
+	private static Button getPullDownListButton() {
+		Button button = new Button("▽");
+
+		return button;
 	}
 
 	public static WindowAdapter getCloseButton(Close closeItem) {
