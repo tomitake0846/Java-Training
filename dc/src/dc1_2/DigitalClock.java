@@ -22,7 +22,7 @@ public class DigitalClock{
 		while(true) {
 			DigitalClock.canvas.repaint();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				System.exit(0);
 			}

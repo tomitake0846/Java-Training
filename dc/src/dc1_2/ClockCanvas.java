@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -20,15 +21,20 @@ public class ClockCanvas extends Canvas{
 	}
 	@Override
 	public void paint(Graphics g) {
-		g.setColor(Color.WHITE);
+		Image buff = createImage(getWidth(),getHeight());
+		Graphics buffGra = buff.getGraphics();
+
+		buffGra.setColor(Color.WHITE);
 		Font font = new Font(this.propertyInfo.getFontFamily(),
 							 this.propertyInfo.getFontName(),
 							 this.propertyInfo.getFontSize());
 		String drawString = LocalDateTime.now().format(f);
-		FontMetrics metrics = g.getFontMetrics(font);
+		FontMetrics metrics = buffGra.getFontMetrics(font);
 		int x = (getWidth() - metrics.stringWidth(drawString)) / 2 ;
 		int y = getHeight() / 2;
-		g.setFont(font);
-		g.drawString(drawString,x , y);
+		buffGra.setFont(font);
+		buffGra.drawString(drawString,x , y);
+
+		g.drawImage(buff, 0, 0, this);
 	}
 }

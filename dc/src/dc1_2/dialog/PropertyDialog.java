@@ -13,71 +13,89 @@ import dc1_2.ButtonFactory;
 import dc1_2.ButtonType;
 import dc1_2.PropertyInfo;
 
-public class PropertyDialog extends abstractDialog{
+public class PropertyDialog extends abstractDialog implements ActionListener{
 
-	private final String FONT_FAMILY = "font Family";
+	private final String FONT_FAMILY = "Font Family";
 	private final String FONT_NAME = "Font Name";
 	private final String FONT_SIZE = "Font Size";
+	private final int PROPERTY_FONT_SIZE = 20;
+	private final int DIALOG_WINDOW_SIZE = 600;
 
 	private List fontFamilyList;
-	private int FontListRows;
-	private PropertyInfo propertyInfo;
+	private int listRows;
+	private PropertyInfo tmpPropertyInfo;
 	private Font propertyFont;
 
 	private Button fontFamilyListButton;
+	private Button updateButton;
 	public PropertyDialog(){
-		setSize(600,600);
-		this.FontListRows = 1;
-		this.propertyInfo = PropertyInfo.instance;
+		setSize(DIALOG_WINDOW_SIZE,DIALOG_WINDOW_SIZE);
+		setResizable(false);
 
-		this.propertyFont = new Font("Serif",0,this.propertyInfo.getFontSize());
+		this.listRows = 1;
+		this.tmpPropertyInfo = PropertyInfo.instance.clone();
+
+		this.propertyFont = new Font("Serif",0,PROPERTY_FONT_SIZE);
 		setFont(this.propertyFont);
 
 		//font family initialization
-		fontFamilyList = getFontFamilyList(this.FontListRows);
+		this.fontFamilyList = getFontFamilyList(this.listRows);
 		add(fontFamilyList);
-		changeSelectFont(this.propertyInfo.getFontFamily());
+		changeSelectFont(this.tmpPropertyInfo.getFontFamily());
 
-		//Button initialization
-		fontFamilyListButton = ButtonFactory.getButton(ButtonType.PULLDOWN_LIST);
-		fontFamilyListButton.setActionCommand(FONT_FAMILY);
-		fontFamilyListButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(e.getActionCommand().equals(FONT_FAMILY)) {
-					if(FontListRows == 1) {
-						FontListRows = 10;
-					} else {
-						FontListRows = 1;
-					}
-					repaint();
-				}
-			}
-
-		});
+		//List Button initialization
+		this.fontFamilyListButton = ButtonFactory.getButton(ButtonType.PULLDOWN_LIST);
+		this.fontFamilyListButton.addActionListener(this);
 		add(fontFamilyListButton);
 
+		//update Button initialization
+		this.updateButton = ButtonFactory.getButton(ButtonType.PROPERTY_UPDATE);
+		this.updateButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PropertyInfo.update(tmpPropertyInfo);
+				close();
+			}
+		});
+		add(updateButton);
+
 	}
+
+	@Override
+	//action when pushed fontFamilyListButton
+	public void actionPerformed(ActionEvent e) {
+		if(listRows == 1) {
+			listRows = 10;
+		} else {
+			listRows = 1;
+		}
+		repaint();
+	}
+
 	public void paint(Graphics g) {
 		g.drawString(FONT_FAMILY,20,100);
 		g.drawString(FONT_NAME, 20, 130);
 		g.drawString(FONT_SIZE, 20, 160);
 
 //		fontFamilyList
-		Dimension d = fontFamilyList.getPreferredSize(this.FontListRows);
-		fontFamilyList.setBounds(120, 100, d.width, d.height);
+		Dimension d = fontFamilyList.getPreferredSize(this.listRows);
+		fontFamilyList.setBounds(130, 80, d.width, d.height);
 
-		this.fontFamilyListButton.setBounds(120+d.width+10, 100, propertyInfo.getFontSize(),propertyInfo.getFontSize());
+		this.fontFamilyListButton.setBounds(130+d.width+2, 80, PROPERTY_FONT_SIZE+5,PROPERTY_FONT_SIZE+5);
+
+		int rightDown = DIALOG_WINDOW_SIZE - PROPERTY_FONT_SIZE * 2;
+		this.updateButton.setBounds(rightDown,rightDown,PROPERTY_FONT_SIZE+12,PROPERTY_FONT_SIZE+5);
 	}
 
-	public List getFontFamilyList(int rows) {
+	private List getFontFamilyList(int rows) {
 		List list = new List(rows,false);
+
 		list.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selectedFontFamily = e.getActionCommand();
 				changeSelectFont(selectedFontFamily);
-				FontListRows=1;
+				listRows=1;
 				repaint();
 			}
 		});
@@ -99,7 +117,13 @@ public class PropertyDialog extends abstractDialog{
 				break;
 			}
 		}
+
+		//propertyInfo update
+		this.tmpPropertyInfo.setFontFamily(fontFamily);
+
+		//GUI update
 		this.fontFamilyList.select(selectTarget);
+		this.fontFamilyList.makeVisible(selectTarget);
 		repaint();
 	}
 	/*

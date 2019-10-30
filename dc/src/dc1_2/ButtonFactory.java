@@ -10,6 +10,7 @@ public class ButtonFactory {
 
 		switch(type) {
 		case PULLDOWN_LIST : return getPullDownListButton();
+		case PROPERTY_UPDATE : return getPropertyUpdateButton();
 			default : throw new IllegalArgumentException();
 		}
 
@@ -17,7 +18,10 @@ public class ButtonFactory {
 
 	private static Button getPullDownListButton() {
 		Button button = new Button("▽");
-
+		return button;
+	}
+	private static Button getPropertyUpdateButton() {
+		Button button = new Button("OK");
 		return button;
 	}
 
