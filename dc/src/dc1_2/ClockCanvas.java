@@ -1,7 +1,6 @@
 package dc1_2;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -15,16 +14,17 @@ public class ClockCanvas extends Canvas{
 	private PropertyInfo propertyInfo;
 
 	public ClockCanvas(int width,int height) {
-		setSize(width,height);
-		setBackground(Color.black);
 		this.propertyInfo = PropertyInfo.instance;
+		setSize(width,height);
+		setBackground(PropertyInfo.toColor(this.propertyInfo.getBGColor()));
 	}
 	@Override
 	public void paint(Graphics g) {
 		Image buff = createImage(getWidth(),getHeight());
-		Graphics buffGra = buff.getGraphics();
+		setBackground(PropertyInfo.toColor(this.propertyInfo.getBGColor()));
 
-		buffGra.setColor(Color.WHITE);
+		Graphics buffGra = buff.getGraphics();
+		buffGra.setColor(PropertyInfo.toColor(this.propertyInfo.getCharColor()));
 		Font font = new Font(this.propertyInfo.getFontFamily(),
 							 this.propertyInfo.getFontName(),
 							 this.propertyInfo.getFontSize());

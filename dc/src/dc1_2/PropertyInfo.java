@@ -1,9 +1,10 @@
 package dc1_2;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.lang.reflect.Field;
 
-//not singleton
-public final class PropertyInfo implements Cloneable{
+public final class PropertyInfo{
 
 	public static PropertyInfo instance = new PropertyInfo();
 
@@ -11,6 +12,8 @@ public final class PropertyInfo implements Cloneable{
 	private String fontFamily = "Serif";
 	private int fontName = Font.ITALIC;
 	private int fontSize = 40;
+	private String CharColor = "white";
+	private String BGColor = "black";
 
 	private PropertyInfo(){};
 
@@ -23,6 +26,12 @@ public final class PropertyInfo implements Cloneable{
 	public int getFontSize() {
 		return fontSize;
 	}
+	public String getCharColor() {
+		return this.CharColor;
+	}
+	public String getBGColor() {
+		return this.BGColor;
+	}
 
 	public void setFontFamily(String fontFamily) {
 		this.fontFamily = fontFamily;
@@ -30,22 +39,23 @@ public final class PropertyInfo implements Cloneable{
 	public void setFontName(int fontName) {
 		this.fontName = fontName;
 	}
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
+	public void setFontSize(String fontSize) {
+		this.fontSize = Integer.parseInt(fontSize);
+	}
+	public void setCharColor(String newCharColor){
+		this.CharColor = newCharColor;
+	}
+	public void setBGColor(String newBGColor) {
+		this.BGColor = newBGColor;
 	}
 
-	@Override
-	public PropertyInfo clone() {
-		PropertyInfo instance = new PropertyInfo();
-		instance.setFontFamily(this.fontFamily);
-		instance.setFontName(this.fontName);
-		instance.setFontSize(this.fontSize);
-		return instance;
-	}
-
-	public static void update(PropertyInfo info) {
-		PropertyInfo.instance.setFontFamily(info.getFontFamily());
-		PropertyInfo.instance.setFontName(info.getFontName());
-		PropertyInfo.instance.setFontSize(info.getFontSize());
+	public static Color toColor(String color) {
+		try {
+			Class<Color> c = Color.class;
+			Field field = c.getDeclaredField(color);
+			return (Color) field.get(Color.BLACK);
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 	}
 }
