@@ -14,6 +14,9 @@ public final class PropertyInfo{
 	private int fontSize = 40;
 	private String CharColor = "white";
 	private String BGColor = "black";
+	private String clockTitle = "digital clock";
+	private int clockWidth = 600;
+	private int clockHeight = 300;
 
 	private PropertyInfo(){};
 
@@ -32,6 +35,16 @@ public final class PropertyInfo{
 	public String getBGColor() {
 		return this.BGColor;
 	}
+	public int getClockWidth() {
+		return this.clockWidth;
+	}
+
+	public int getClockHeight() {
+		return this.clockHeight;
+	}
+	public String getClockTitle() {
+		return this.clockTitle;
+	}
 
 	public void setFontFamily(String fontFamily) {
 		this.fontFamily = fontFamily;
@@ -41,6 +54,8 @@ public final class PropertyInfo{
 	}
 	public void setFontSize(String fontSize) {
 		this.fontSize = Integer.parseInt(fontSize);
+		this.clockWidth = this.fontSize * 15;
+		this.clockHeight = (this.clockWidth / 2) - 20;
 	}
 	public void setCharColor(String newCharColor){
 		this.CharColor = newCharColor;

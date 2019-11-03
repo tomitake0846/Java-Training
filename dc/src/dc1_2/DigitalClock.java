@@ -10,8 +10,9 @@ public class DigitalClock{
 	public static final MenuBar menubar;
 
 	static {
-		frame = new MyFrame(Config.TITLE,Config.WIDTH,Config.HEIGHT);
-		canvas = new ClockCanvas(Config.WIDTH,Config.HEIGHT);
+		PropertyInfo property = PropertyInfo.instance;
+		frame = new MyFrame(property);
+		canvas = new ClockCanvas(property);
 		menubar = new MyMenubar();
 		frame.add(canvas);
 		frame.setMenuBar(menubar);

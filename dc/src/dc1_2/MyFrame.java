@@ -4,9 +4,9 @@ import java.awt.Frame;
 
 public class MyFrame extends Frame implements Close{
 
-	public MyFrame(String title,int width,int height) {
-		super(title);
-		setSize(width,height);
+	public MyFrame(PropertyInfo propertyInfo) {
+		super(propertyInfo.getClockTitle());
+		setSize(propertyInfo.getClockWidth(),propertyInfo.getClockHeight());
 		setVisible(true);
 	}
 

@@ -13,9 +13,9 @@ public class ClockCanvas extends Canvas{
 	private DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 	private PropertyInfo propertyInfo;
 
-	public ClockCanvas(int width,int height) {
-		this.propertyInfo = PropertyInfo.instance;
-		setSize(width,height);
+	public ClockCanvas(PropertyInfo propertyInfo) {
+		this.propertyInfo = propertyInfo;
+		setSize(this.propertyInfo.getClockWidth(),this.propertyInfo.getClockHeight());
 		setBackground(PropertyInfo.toColor(this.propertyInfo.getBGColor()));
 	}
 	@Override
@@ -33,7 +33,7 @@ public class ClockCanvas extends Canvas{
 		int x = (getWidth() - metrics.stringWidth(drawString)) / 2 ;
 		int y = getHeight() / 2;
 		buffGra.setFont(font);
-		buffGra.drawString(drawString,x , y);
+		buffGra.drawString(drawString,x,y);
 
 		g.drawImage(buff, 0, 0, this);
 	}

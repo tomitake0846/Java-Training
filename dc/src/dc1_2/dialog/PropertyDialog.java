@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import dc1_2.ButtonFactory;
 import dc1_2.ButtonType;
+import dc1_2.DigitalClock;
 import dc1_2.PropertyInfo;
 import dc1_2.PulldownList;
 
@@ -93,6 +94,10 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 		propertyInfo.setFontSize(currentFontSize);
 		propertyInfo.setCharColor(currentCharColor);
 		propertyInfo.setBGColor(currentBGColor);
+
+		DigitalClock.frame.setSize(propertyInfo.getClockWidth(),propertyInfo.getClockHeight());
+		DigitalClock.canvas.repaint();
+
 		close();
 	}
 
