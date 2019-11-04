@@ -1,4 +1,4 @@
-package dc1_2.Menu;
+package dc1_2.menu;
 
 import java.awt.Dialog;
 import java.awt.Menu;
@@ -6,8 +6,8 @@ import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import dc1_2.DialogFactory;
-import dc1_2.DialogType;
+import dc1_2.dialog.DialogFactory;
+import dc1_2.dialog.DialogType;
 
 public class MainMenu extends Menu implements ActionListener{
 

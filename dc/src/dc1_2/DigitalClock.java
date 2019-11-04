@@ -2,7 +2,7 @@ package dc1_2;
 
 import java.awt.MenuBar;
 
-import dc1_2.Menu.MyMenubar;
+import dc1_2.menu.MyMenubar;
 
 public class DigitalClock{
 	public static final MyFrame frame;
@@ -10,8 +10,9 @@ public class DigitalClock{
 	public static final MenuBar menubar;
 
 	static {
-		frame = new MyFrame(Config.TITLE,Config.WIDTH,Config.HEIGHT);
-		canvas = new ClockCanvas(Config.WIDTH,Config.HEIGHT);
+		PropertyInfo property = PropertyInfo.instance;
+		frame = new MyFrame(property);
+		canvas = new ClockCanvas(property);
 		menubar = new MyMenubar();
 		frame.add(canvas);
 		frame.setMenuBar(menubar);
@@ -22,7 +23,7 @@ public class DigitalClock{
 		while(true) {
 			DigitalClock.canvas.repaint();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				System.exit(0);
 			}

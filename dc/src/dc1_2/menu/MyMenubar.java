@@ -1,4 +1,4 @@
-package dc1_2.Menu;
+package dc1_2.menu;
 
 import java.awt.MenuBar;
 
