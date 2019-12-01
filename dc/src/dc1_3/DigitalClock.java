@@ -1,10 +1,9 @@
 package dc1_3;
 
 import java.awt.MenuBar;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
 
 import dc1_2.menu.MyMenubar;
+import dc1_3.menu.PopMenu;
 public class DigitalClock{
 	public static final MyFrame frame;
 	public static final ClockCanvas canvas;
@@ -13,12 +12,7 @@ public class DigitalClock{
 
 	static {
 
-		PopupMenu pop = new PopupMenu("test");
-
-		pop.add(new MenuItem("fuck"));
-		pop.add(new MenuItem("fuck!"));
-		pop.add(new MenuItem("fuck!!!"));
-
+		PopMenu pop = new PopMenu();
 		PropertyInfo property = PropertyInfo.instance;
 		frame = new MyFrame(property);
 		canvas = new ClockCanvas(property);

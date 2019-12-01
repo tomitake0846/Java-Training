@@ -56,7 +56,7 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 		String[] fontSizeList = {"20","26","32","40","48","56"};
 
 		String[] colorList = {"white","lightGray","gray","darkGray","black","red",
-				"pink","orange","yellow","green","manatee","cyan","blue"};
+				"pink","orange","yellow","green","magenta","cyan","blue"};
 
 		this.fontFamilyPulldownList = initPulldownList(fontFamilyList,10,this.propertyInfo.getFontFamily(),listWidth,80);
 		this.fontSizePulldownList = initPulldownList(fontSizeList,5,this.propertyInfo.getFontSize()+"",listWidth,130);
