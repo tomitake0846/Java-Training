@@ -3,11 +3,14 @@ package dc1_4;
 import java.applet.Applet;
 import java.awt.Button;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Label;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import dc1_2.dialog.PropertyDialog;
+import dc1_4.dialog.PropertyDialog;
 
 public class PulldownList extends Applet implements ActionListener{
 	protected List list;
@@ -16,30 +19,41 @@ public class PulldownList extends Applet implements ActionListener{
 	protected int pulledListRow;
 	protected int listRows;
 	protected String selectedItem;
-	private int x;
-	private int y;
+	private GridBagConstraints labelGBC;
+	private GridBagConstraints listGBC;
+	private GridBagConstraints buttonGBC;
+	private Label label;
+	private static int MAX_WIDTH;
 
-	public PulldownList(String[] listItems,int pulledListRow,String selectedItem,int x,int y) {
-		this(listItems,ButtonType.PULLDOWN_LIST, pulledListRow, selectedItem, x, y);
+	public PulldownList(String[] listItems,int pulledListRow,String selectedItem) {
+		this(listItems,ButtonType.PULLDOWN_LIST, pulledListRow, selectedItem);
 	}
 
-	public PulldownList(String[] listItems,ButtonType type,int pulledListRow,String selectedItem,int x,int y) {
+	public PulldownList(String[] listItems,ButtonType type,int pulledListRow,String selectedItem) {
 		listRows = shrinkedListRow;
 		this.pulledListRow = pulledListRow;
 		this.pullButton = ButtonFactory.getButton(type,this);
 		listInit(listItems);
 		changeSelectItem(selectedItem);
 		this.selectedItem = selectedItem;
-		this.x = x;
-		this.y = y;
 	}
 
 
 	public void paintPrepare() {
 		Dimension d = this.list.getPreferredSize(this.listRows);
+		if(PulldownList.MAX_WIDTH < d.width) {
+			MAX_WIDTH = d.width;
+		}
 		int fontSize = PropertyDialog.PROPERTY_FONT_SIZE;
-		this.list.setBounds(getX(), getY(), d.width, d.height);
-		this.pullButton.setBounds(getX()+d.width+2, getY(), fontSize+5,fontSize+5);
+		this.list.setSize(PulldownList.MAX_WIDTH, d.height);
+		this.pullButton.setSize(fontSize+10, fontSize+10);
+	}
+	public void paintPrepare(GridBagLayout layout) {
+		paintPrepare();
+		layout.setConstraints(label,labelGBC);
+		layout.setConstraints(list, listGBC);
+		layout.setConstraints(pullButton, buttonGBC);
+
 	}
 
 	@Override
@@ -65,11 +79,32 @@ public class PulldownList extends Applet implements ActionListener{
 	public String getSelectedItem() {
 		return this.selectedItem;
 	}
-	public int getX() {
-		return this.x;
+
+	//gbc accessor
+	public void setListGBC(GridBagConstraints gbc) {
+		this.listGBC = gbc;
 	}
-	public int getY() {
-		return this.y;
+	public GridBagConstraints getListGBC() {
+		return this.listGBC;
+	}
+	public void setButtonGBC(GridBagConstraints gbc) {
+		this.buttonGBC = gbc;
+	}
+	public GridBagConstraints getButtonGBC() {
+		return this.buttonGBC;
+	}
+	public void setLabelGBC(GridBagConstraints gbc) {
+		this.labelGBC = gbc;
+	}
+	public GridBagConstraints getLabelGBC() {
+		return this.labelGBC;
+	}
+	//label accessor
+	public void setLabel(Label label) {
+		this.label = label;
+	}
+	public Label getLabel() {
+		return this.label;
 	}
 
 	private void listInit(String[] items) {

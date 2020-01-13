@@ -2,7 +2,7 @@ package dc1_4;
 
 import java.awt.MenuBar;
 
-import dc1_2.menu.MyMenubar;
+import dc1_4.menu.MyMenubar;
 
 public class DigitalClock{
 	public static final MyFrame frame;

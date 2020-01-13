@@ -1,5 +1,6 @@
-package ch16.ex08;
+package ch16.ex10;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -8,7 +9,9 @@ import java.lang.reflect.Method;
 public class Interpret {
 
 	private Object instance;
-
+	private Object array;
+	private Interpret targetObject;
+	public Interpret() {};
 	public Interpret(String type,Object...args) {
 		try {
 
@@ -88,5 +91,47 @@ public class Interpret {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	public void generateArray(String arrayType,int...size) {
+		try {
+			Class<?> clazz = Class.forName(arrayType);
+			this.array = Array.newInstance(clazz, size);
+		} catch (ClassNotFoundException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+	}
+	public void setArrayElement(Object value,int...indexes) {
+		Object dummy = array;
+		for(int i=0;i<indexes.length-1;i++) {
+			dummy = Array.get(dummy, indexes[i]);
+		}
+		Array.set(dummy,indexes[indexes.length-1],value);
+	}
+
+	public Object getArrayElement(int...indexes) {
+		Object dummy = array;
+		for(int i=0;i<indexes.length-1;i++) {
+			dummy = Array.get(dummy, indexes[i]);
+		}
+
+		return Array.get(dummy,indexes[indexes.length-1]);
+	}
+
+	public void prepareRunArrayElementMethod(int...indexes) {
+		Class<?> clazz = this.array.getClass().getComponentType();
+		while(clazz.getComponentType() != null) {
+			clazz = clazz.getComponentType();
+		}
+		this.targetObject = new Interpret(clazz.getName());
+
+		this.targetObject.instance = getArrayElement(indexes);
+
+	}
+	public void runArrayElementConsumer(String methodName,Object...args) {
+		this.targetObject.consumer(methodName, args);
+	}
+	public Object runArrayElementFunction(String methodName,Object...args) {
+		return this.targetObject.function(methodName, args);
 	}
 }

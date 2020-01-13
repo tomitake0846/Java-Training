@@ -6,8 +6,8 @@ import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import dc1_2.dialog.DialogFactory;
-import dc1_2.dialog.DialogType;
+import dc1_4.dialog.DialogFactory;
+import dc1_4.dialog.DialogType;
 
 public class MainMenu extends Menu implements ActionListener{
 

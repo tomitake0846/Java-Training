@@ -4,9 +4,9 @@ import java.awt.Dialog;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import dc1_2.ButtonFactory;
-import dc1_2.Close;
-import dc1_2.DigitalClock;
+import dc1_4.ButtonFactory;
+import dc1_4.Close;
+import dc1_4.DigitalClock;
 
 public abstract class abstractDialog extends Dialog implements Close,ComponentListener{
 	abstractDialog() {

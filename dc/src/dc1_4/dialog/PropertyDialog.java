@@ -5,14 +5,17 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import dc1_2.ButtonFactory;
-import dc1_2.ButtonType;
-import dc1_2.DigitalClock;
-import dc1_2.PropertyInfo;
-import dc1_2.PulldownList;
+import dc1_4.ButtonFactory;
+import dc1_4.ButtonType;
+import dc1_4.DigitalClock;
+import dc1_4.PropertyInfo;
+import dc1_4.PulldownList;
 
 public class PropertyDialog extends abstractDialog implements ActionListener{
 
@@ -35,7 +38,15 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 	private PulldownList bgColorPulldownList;
 	private PulldownList charColorPulldownList;
 
+	private GridBagLayout layout;
+	private GridBagConstraints gbc;
+
 	public PropertyDialog(){
+		layout = new GridBagLayout();
+		gbc = new GridBagConstraints();
+		this.setLayout(layout);
+//		layout.setConstraints(new Label("test"), gbc);
+
 		setSize(DIALOG_WINDOW_SIZE,DIALOG_WINDOW_SIZE);
 		setResizable(false);
 
@@ -58,10 +69,10 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 		String[] colorList = {"white","lightGray","gray","darkGray","black","red",
 				"pink","orange","yellow","green","manatee","cyan","blue"};
 
-		this.fontFamilyPulldownList = initPulldownList(fontFamilyList,10,this.propertyInfo.getFontFamily(),listWidth,80);
-		this.fontSizePulldownList = initPulldownList(fontSizeList,5,this.propertyInfo.getFontSize()+"",listWidth,130);
-		this.charColorPulldownList = initPulldownList(colorList,5,this.propertyInfo.getCharColor(),listWidth,180);
-		this.bgColorPulldownList = initPulldownList(colorList,5,this.propertyInfo.getBGColor(),listWidth,230);
+		this.fontFamilyPulldownList = initPulldownList(fontFamilyList,10,this.propertyInfo.getFontFamily(),FONT_FAMILY);
+		this.fontSizePulldownList = initPulldownList(fontSizeList,5,this.propertyInfo.getFontSize()+"",FONT_SIZE);
+		this.charColorPulldownList = initPulldownList(colorList,5,this.propertyInfo.getCharColor(),CHAR_COLOR);
+		this.bgColorPulldownList = initPulldownList(colorList,5,this.propertyInfo.getBGColor(),BG_COLOR);
 
 		//update Button initialization
 		this.updateButton = ButtonFactory.getButton(ButtonType.PROPERTY_UPDATE,this);
@@ -70,13 +81,11 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 	}
 
 	public void paint(Graphics g) {
-		g.drawString(FONT_FAMILY,20,100);
-		g.drawString(FONT_SIZE, 20, 150);
-		g.drawString(CHAR_COLOR,20,200);
-		g.drawString(BG_COLOR, 20, 250);
 
-		this.fontFamilyPulldownList.paintPrepare();
-		this.bgColorPulldownList.paintPrepare();
+		this.fontFamilyPulldownList.paintPrepare(this.layout);
+		this.bgColorPulldownList.paintPrepare(this.layout);
+		this.charColorPulldownList.paintPrepare(this.layout);
+		this.fontSizePulldownList.paintPrepare(this.layout);
 
 		int rightDown = DIALOG_WINDOW_SIZE - PROPERTY_FONT_SIZE * 2;
 		this.updateButton.setBounds(rightDown,rightDown,PROPERTY_FONT_SIZE+12,PROPERTY_FONT_SIZE+5);
@@ -102,11 +111,34 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 	}
 
 
+	private int count=0;
+	private PulldownList initPulldownList(String[] items,int firstRow,String selectedItem,String attrName) {
+		PulldownList pulldownList = new PulldownList (items,firstRow,selectedItem);
+		gbc = new GridBagConstraints();
+		gbc.gridx=0;
+		gbc.gridy=count;
+		gbc.anchor = GridBagConstraints.EAST;
+		Label label = new Label(attrName);
+		pulldownList.setLabel(label);
+		pulldownList.setLabelGBC(gbc);
+		layout.setConstraints(label, gbc);
+		add(label);
 
-	private PulldownList initPulldownList(String[] items,int firstRow,String selectedItem,int x,int y) {
-		PulldownList pulldownList = new PulldownList (items,firstRow,selectedItem,x,y);
+		gbc = new GridBagConstraints();
+		gbc.gridx=1;
+		gbc.gridy=count;
+		gbc.anchor = GridBagConstraints.WEST;
+		pulldownList.setListGBC(gbc);
+		layout.setConstraints(pulldownList.getList(), gbc);
 		add(pulldownList.getList());
+
+		gbc = new GridBagConstraints();
+		gbc.gridx=2;
+		gbc.gridy=count++;
+		pulldownList.setButtonGBC(gbc);
+		layout.setConstraints(pulldownList.getButton(), gbc);
 		add(pulldownList.getButton());
+
 		pulldownList.paintPrepare();
 		return pulldownList;
 	}
