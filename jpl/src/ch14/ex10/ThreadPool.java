@@ -1,5 +1,8 @@
 package ch14.ex10;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /*
  * Copyright (C) 2012, 2013 RICOH Co., Ltd. All rights reserved.
  * Copyright (C) 2019 Yoshiki Shibata. All rights reserved.
@@ -35,8 +38,15 @@ public class ThreadPool {
      * @throws IllegalArgumentException if either queueSize or numberOfThreads
      *         is less than 1
      */
+	Deque<Thread> deque;
     public ThreadPool(int queueSize, int numberOfThreads) {
-
+    	if(queueSize < 1) {
+    		throw new IllegalArgumentException("queueSize needs at least 1.");
+    	}
+    	if(numberOfThreads < 1) {
+    		throw new IllegalArgumentException("queueSize needs at least 1.");
+    	}
+    	deque = new ArrayDeque<Thread>(queueSize);
     }
 
     /**
