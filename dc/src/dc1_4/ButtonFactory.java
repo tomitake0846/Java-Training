@@ -12,6 +12,8 @@ public class ButtonFactory {
 		switch(type) {
 		case PULLDOWN_LIST : return getPullDownListButton(e);
 		case PROPERTY_UPDATE : return getPropertyUpdateButton(e);
+		case PROPERTY_CANCEL : return getPropertyCancelButton(e);
+		case PROPERTY_RESET : return getPropertyResetButton(e);
 			default : throw new IllegalArgumentException();
 		}
 
@@ -27,7 +29,16 @@ public class ButtonFactory {
 		button.addActionListener(e);
 		return button;
 	}
-
+	private static Button getPropertyCancelButton(ActionListener e) {
+		Button button = new Button("cancel");
+		button.addActionListener(e);
+		return button;
+	}
+	private static Button getPropertyResetButton(ActionListener e) {
+		Button button = new Button("reset");
+		button.addActionListener(e);
+		return button;
+	}
 	public static WindowAdapter getCloseButton(Close closeItem) {
 		return new WindowAdapter() {
 			private Close close;

@@ -2,7 +2,6 @@ package dc1_4.dialog;
 
 import java.awt.Button;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
@@ -26,12 +25,13 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 	private final String FONT_SIZE = "Font Size";
 	private final String CHAR_COLOR = "Character Color";
 	private final String BG_COLOR = "BackGround Color";
-	private final int MAX_PROPERTY_WIDTH;
 
 	private PropertyInfo propertyInfo;
 	private Font propertyFont;
 
 	private Button updateButton;
+	private Button cancelButton;
+	private Button resetButton;
 
 	private PulldownList fontFamilyPulldownList;
 	private PulldownList fontSizePulldownList;
@@ -39,15 +39,12 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 	private PulldownList charColorPulldownList;
 
 	private GridBagLayout layout;
-	private GridBagConstraints gbc;
 
 	public PropertyDialog(){
 		layout = new GridBagLayout();
-		gbc = new GridBagConstraints();
 		this.setLayout(layout);
-//		layout.setConstraints(new Label("test"), gbc);
 
-		setSize(DIALOG_WINDOW_SIZE,DIALOG_WINDOW_SIZE);
+		setBounds(DigitalClock.frame.getX()+20,DigitalClock.frame.getY()+20,DIALOG_WINDOW_SIZE,DIALOG_WINDOW_SIZE/2);
 		setResizable(false);
 
 		this.propertyInfo = PropertyInfo.instance;
@@ -55,28 +52,27 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 		this.propertyFont = new Font("Serif",0,PROPERTY_FONT_SIZE);
 		setFont(this.propertyFont);
 
-		//shoud refactoring
-		this.MAX_PROPERTY_WIDTH = getMaxPropertyWidth(propertyFont,
-				FONT_FAMILY,FONT_SIZE,CHAR_COLOR,BG_COLOR);
-
-		int listWidth = MAX_PROPERTY_WIDTH+40;
-
 		String[] fontFamilyList = GraphicsEnvironment.getLocalGraphicsEnvironment()
 				.getAvailableFontFamilyNames();
 
 		String[] fontSizeList = {"20","26","32","40","48","56"};
 
 		String[] colorList = {"white","lightGray","gray","darkGray","black","red",
-				"pink","orange","yellow","green","manatee","cyan","blue"};
+				"pink","orange","yellow","green","magenta","cyan","blue"};
 
 		this.fontFamilyPulldownList = initPulldownList(fontFamilyList,10,this.propertyInfo.getFontFamily(),FONT_FAMILY);
 		this.fontSizePulldownList = initPulldownList(fontSizeList,5,this.propertyInfo.getFontSize()+"",FONT_SIZE);
 		this.charColorPulldownList = initPulldownList(colorList,5,this.propertyInfo.getCharColor(),CHAR_COLOR);
 		this.bgColorPulldownList = initPulldownList(colorList,5,this.propertyInfo.getBGColor(),BG_COLOR);
 
-		//update Button initialization
+		//update & cancel Button initialization
 		this.updateButton = ButtonFactory.getButton(ButtonType.PROPERTY_UPDATE,this);
+		this.cancelButton = ButtonFactory.getButton(ButtonType.PROPERTY_CANCEL, this);
+		this.resetButton = ButtonFactory.getButton(ButtonType.PROPERTY_RESET, this);
+
 		add(updateButton);
+		add(cancelButton);
+		add(resetButton);
 
 	}
 
@@ -87,22 +83,34 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 		this.charColorPulldownList.paintPrepare(this.layout);
 		this.fontSizePulldownList.paintPrepare(this.layout);
 
-		int rightDown = DIALOG_WINDOW_SIZE - PROPERTY_FONT_SIZE * 2;
-		this.updateButton.setBounds(rightDown,rightDown,PROPERTY_FONT_SIZE+12,PROPERTY_FONT_SIZE+5);
+		int rightDown = (DIALOG_WINDOW_SIZE/2) - PROPERTY_FONT_SIZE * 2;
+		this.updateButton.setBounds((int)(rightDown*1.5),rightDown,PROPERTY_FONT_SIZE+12,PROPERTY_FONT_SIZE+5);
+		this.cancelButton.setBounds((int)(rightDown*1.5) + PROPERTY_FONT_SIZE+20,rightDown,PROPERTY_FONT_SIZE+42,PROPERTY_FONT_SIZE+5);
+		this.resetButton.setBounds((int)(rightDown*1.5) + PROPERTY_FONT_SIZE+90,rightDown,PROPERTY_FONT_SIZE+42,PROPERTY_FONT_SIZE+5);
 	}
 
 	@Override
 	//update PropertyInfo
 	public void actionPerformed(ActionEvent e) {
-		String currentFontFamily = fontFamilyPulldownList.getSelectedItem();
-		String currentFontSize = fontSizePulldownList.getSelectedItem();
-		String currentCharColor = charColorPulldownList.getSelectedItem();
-		String currentBGColor = bgColorPulldownList.getSelectedItem();
 
-		propertyInfo.setFontFamily(currentFontFamily);
-		propertyInfo.setFontSize(currentFontSize);
-		propertyInfo.setCharColor(currentCharColor);
-		propertyInfo.setBGColor(currentBGColor);
+		if(e.getActionCommand().equals("OK")) {
+
+			String currentFontFamily = fontFamilyPulldownList.getSelectedItem();
+			String currentFontSize = fontSizePulldownList.getSelectedItem();
+			String currentCharColor = charColorPulldownList.getSelectedItem();
+			String currentBGColor = bgColorPulldownList.getSelectedItem();
+
+			propertyInfo.setFontFamily(currentFontFamily);
+			propertyInfo.setFontSize(currentFontSize);
+			propertyInfo.setCharColor(currentCharColor);
+			propertyInfo.setBGColor(currentBGColor);
+
+			DigitalClock.prefs.propertyUpdate();
+
+		} else if (e.getActionCommand().equals("reset")) {
+			DigitalClock.prefs.propertyReflesh();
+			DigitalClock.prefs.positionReflesh();
+		}
 
 		DigitalClock.frame.setSize(propertyInfo.getClockWidth(),propertyInfo.getClockHeight());
 		DigitalClock.canvas.repaint();
@@ -113,8 +121,9 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 
 	private int count=0;
 	private PulldownList initPulldownList(String[] items,int firstRow,String selectedItem,String attrName) {
-		PulldownList pulldownList = new PulldownList (items,firstRow,selectedItem);
-		gbc = new GridBagConstraints();
+		PulldownList pulldownList = new PulldownList (items,firstRow,selectedItem,attrName);
+		GridBagConstraints gbc = new GridBagConstraints();
+
 		gbc.gridx=0;
 		gbc.gridy=count;
 		gbc.anchor = GridBagConstraints.EAST;
@@ -128,6 +137,7 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 		gbc.gridx=1;
 		gbc.gridy=count;
 		gbc.anchor = GridBagConstraints.WEST;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		pulldownList.setListGBC(gbc);
 		layout.setConstraints(pulldownList.getList(), gbc);
 		add(pulldownList.getList());
@@ -135,31 +145,13 @@ public class PropertyDialog extends abstractDialog implements ActionListener{
 		gbc = new GridBagConstraints();
 		gbc.gridx=2;
 		gbc.gridy=count++;
-		pulldownList.setButtonGBC(gbc);
-		layout.setConstraints(pulldownList.getButton(), gbc);
-		add(pulldownList.getButton());
+		label = new Label("   ");
+		pulldownList.setParetLabel(label);
+		pulldownList.setParetGBC(gbc);
+		layout.setConstraints(label, gbc);
+		add(label);
 
 		pulldownList.paintPrepare();
 		return pulldownList;
 	}
-
-	private int getMaxPropertyWidth(Font font,String...targets) {
-		int maxPropertyWidth = 0;
-		int width = 0;
-		Graphics graphics = createImage(DIALOG_WINDOW_SIZE, DIALOG_WINDOW_SIZE).getGraphics();
-		FontMetrics fontMetrics = graphics.getFontMetrics(font);
-
-		for(String target : targets) {
-			width = fontMetrics.stringWidth(target);
-			if(maxPropertyWidth < width) {
-				maxPropertyWidth = width;
-			}
-		}
-
-		graphics = null;
-		fontMetrics = null;
-
-		return maxPropertyWidth;
-	}
-
 }

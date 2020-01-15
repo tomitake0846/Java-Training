@@ -16,15 +16,15 @@ public class ClockCanvas extends Canvas{
 	public ClockCanvas(PropertyInfo propertyInfo) {
 		this.propertyInfo = propertyInfo;
 		setSize(this.propertyInfo.getClockWidth(),this.propertyInfo.getClockHeight());
-		setBackground(PropertyInfo.toColor(this.propertyInfo.getBGColor()));
+		setBackground(propertyInfo.toColor(this.propertyInfo.getBGColor()));
 	}
 	@Override
 	public void paint(Graphics g) {
 		Image buff = createImage(getWidth(),getHeight());
-		setBackground(PropertyInfo.toColor(this.propertyInfo.getBGColor()));
+		setBackground(propertyInfo.toColor(this.propertyInfo.getBGColor()));
 
 		Graphics buffGra = buff.getGraphics();
-		buffGra.setColor(PropertyInfo.toColor(this.propertyInfo.getCharColor()));
+		buffGra.setColor(propertyInfo.toColor(this.propertyInfo.getCharColor()));
 		Font font = new Font(this.propertyInfo.getFontFamily(),
 							 this.propertyInfo.getFontName(),
 							 this.propertyInfo.getFontSize());

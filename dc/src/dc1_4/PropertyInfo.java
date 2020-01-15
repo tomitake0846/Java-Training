@@ -64,13 +64,27 @@ public final class PropertyInfo{
 		this.BGColor = newBGColor;
 	}
 
-	public static Color toColor(String color) {
+	public Color toColor(String color) {
 		try {
 			Class<Color> c = Color.class;
 			Field field = c.getDeclaredField(color);
 			return (Color) field.get(Color.BLACK);
 		} catch (Exception e) {
+			System.err.println("unexpected color [" + color+"].");
+			System.err.println("reset.");
+			reflesh();
 			throw new RuntimeException();
 		}
+	}
+
+	public void reflesh() {
+		fontFamily = "Serif";
+		fontName = Font.ITALIC;
+		fontSize = 40;
+		CharColor = "white";
+		BGColor = "black";
+		clockTitle = "digital clock";
+		clockWidth = 600;
+		clockHeight = 300;
 	}
 }

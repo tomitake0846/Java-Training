@@ -1,7 +1,6 @@
 package dc1_4;
 
 import java.applet.Applet;
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,106 +8,96 @@ import java.awt.Label;
 import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import dc1_4.dialog.PropertyDialog;
-
-public class PulldownList extends Applet implements ActionListener{
+public class PulldownList extends Applet{
 	protected List list;
-	protected Button pullButton;
 	protected int shrinkedListRow = 1;
 	protected int pulledListRow;
 	protected int listRows;
 	protected String selectedItem;
 	private GridBagConstraints labelGBC;
 	private GridBagConstraints listGBC;
-	private GridBagConstraints buttonGBC;
+	private GridBagConstraints paretGBC;
 	private Label label;
-	private static int MAX_WIDTH;
+	private Label paretLabel;
+	private String listName;
 
-	public PulldownList(String[] listItems,int pulledListRow,String selectedItem) {
-		this(listItems,ButtonType.PULLDOWN_LIST, pulledListRow, selectedItem);
-	}
-
-	public PulldownList(String[] listItems,ButtonType type,int pulledListRow,String selectedItem) {
+	public PulldownList(String[] listItems,int pulledListRow,String selectedItem,String listName) {
+		this.listName = listName;
 		listRows = shrinkedListRow;
 		this.pulledListRow = pulledListRow;
-		this.pullButton = ButtonFactory.getButton(type,this);
 		listInit(listItems);
 		changeSelectItem(selectedItem);
 		this.selectedItem = selectedItem;
+		paintPrepare();
 	}
 
 
 	public void paintPrepare() {
 		Dimension d = this.list.getPreferredSize(this.listRows);
-		if(PulldownList.MAX_WIDTH < d.width) {
-			MAX_WIDTH = d.width;
-		}
-		int fontSize = PropertyDialog.PROPERTY_FONT_SIZE;
-		this.list.setSize(PulldownList.MAX_WIDTH, d.height);
-		this.pullButton.setSize(fontSize+10, fontSize+10);
+		this.list.setSize(d.width+20,d.height);
 	}
 	public void paintPrepare(GridBagLayout layout) {
 		paintPrepare();
 		layout.setConstraints(label,labelGBC);
 		layout.setConstraints(list, listGBC);
-		layout.setConstraints(pullButton, buttonGBC);
+		layout.setConstraints(paretLabel, paretGBC);
 
-	}
-
-	@Override
-	//pull down button's action
-	public void actionPerformed(ActionEvent e) {
-		//pull action
-		if(listRows == shrinkedListRow) {
-			listRows = pulledListRow;
-
-		//shrink action
-		} else {
-			listRows = shrinkedListRow;
-		}
-		paintPrepare();
 	}
 
 	public List getList() {
 		return this.list;
 	}
-	public Button getButton() {
-		return this.pullButton;
-	}
 	public String getSelectedItem() {
 		return this.selectedItem;
 	}
 
-	//gbc accessor
+	//gbc settor
 	public void setListGBC(GridBagConstraints gbc) {
 		this.listGBC = gbc;
-	}
-	public GridBagConstraints getListGBC() {
-		return this.listGBC;
-	}
-	public void setButtonGBC(GridBagConstraints gbc) {
-		this.buttonGBC = gbc;
-	}
-	public GridBagConstraints getButtonGBC() {
-		return this.buttonGBC;
 	}
 	public void setLabelGBC(GridBagConstraints gbc) {
 		this.labelGBC = gbc;
 	}
-	public GridBagConstraints getLabelGBC() {
-		return this.labelGBC;
+	public void setParetGBC(GridBagConstraints gbc) {
+		this.paretGBC = gbc;
 	}
+
 	//label accessor
 	public void setLabel(Label label) {
 		this.label = label;
 	}
-	public Label getLabel() {
-		return this.label;
+	public void setParetLabel(Label paretLabel) {
+		this.paretLabel = paretLabel;
 	}
 
 	private void listInit(String[] items) {
 		List tmpList = new List(listRows,false);
+		tmpList.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount()==1) {
+					//pull action
+					if(listRows == shrinkedListRow) {
+						listRows = pulledListRow;
+					}
+				} else if (e.getClickCount() == 2) {
+					changeSelectItem(selectedItem);
+				}
+				paintPrepare();
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+
+		});
 		tmpList.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,6 +105,9 @@ public class PulldownList extends Applet implements ActionListener{
 				changeSelectItem(selectItem);
 				selectedItem = selectItem;
 				listRows=1;
+				if(listName.contains("Color")) {
+					paretLabel.setBackground(DigitalClock.property.toColor(selectItem));
+				}
 				paintPrepare();
 			}
 		});
