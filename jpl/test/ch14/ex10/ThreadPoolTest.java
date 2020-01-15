@@ -2,7 +2,8 @@
  * Copyright (C) 2012, 2013, 2016, 2017 RICOH Co., Ltd. All rights reserved.
  * Copyright (C) 2020 Yoshiki Shibata. All rights reserved.
  */
-package ch14.ex10;
+package jpl.ch14.ex10;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -152,8 +153,8 @@ public class ThreadPoolTest {
             } catch (IllegalStateException e) {
                 // This is the expected behavior: Do nothing.
             } catch (IllegalThreadStateException e) {
-                // This means that an illegal operation occurred,
-                // because either start() or stop() method couldn't
+                // This means that an illegal operation occurred, 
+                // because either start() or stop() method couldn't 
                 // detect a illegal state.
                 e.printStackTrace();
                 ok = true;
@@ -466,7 +467,7 @@ public class ThreadPoolTest {
     @Test
     public void testAllThreadsShouldWait() {
         // This is a test code which detects "busy-loop" implementation of
-        // ThreadPool.
+        // ThreadPool. 
         ThreadPool tp = new ThreadPool(10, 10);
         tp.start();
 
