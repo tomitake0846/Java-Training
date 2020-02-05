@@ -44,7 +44,6 @@ public class ThreadPool {
 	private ThreadGroup tg;
 	private int queueSize;
 	private int numberOfThreads;
-	private boolean running = true;
 
 	public ThreadPool(int queueSize, int numberOfThreads) {
 		if(queueSize < 1) {
@@ -64,34 +63,28 @@ public class ThreadPool {
 	 *
 	 * @throws IllegalStateException if threads has been already started.
 	 */
-	public synchronized void start() {
+	public void start() {
 		if(threadStarted) {
 			throw new IllegalStateException("Thread has been already started.");
 		}
 
 		threadStarted = true;
-
-//		//repeat until deque is empty.
-		do{
-			//if deque is Empty, wait 100 mili sec.
-			while(deque.isEmpty()) {
-				try {
-					System.out.println("hoge");
+		while(deque.isEmpty()) {
+			try {
+				synchronized(this.deque) {
 					wait();
-//					System.out.println("hoge");
-				} catch (InterruptedException e) {}
-			}
+				}
+			} catch (InterruptedException e) {}
+		}
 
-			//if all thread have used , wait 100 mili sec.
-			while(tg.activeCount() >= numberOfThreads) {
-				try {
-					wait(100);
-					System.out.println("hoge");
-				} catch (InterruptedException e) {}
-			}
-			deque.poll().start();
-			notifyAll();
-		}while(running);
+		//if all thread have used , wait 100 mili sec.
+		while(tg.activeCount() >= numberOfThreads) {
+			try {
+				wait(100);
+			} catch (InterruptedException e) {}
+		}
+		deque.poll().start();
+		notifyAll();
 	}
 
 	/**
@@ -101,16 +94,15 @@ public class ThreadPool {
 	 *
 	 * @throws IllegalStateException if threads has not been started.
 	 */
-	public synchronized void stop() {
+	public void stop() {
 		if(!threadStarted) {
 			throw new IllegalStateException("Thread has not been started.");
 		}
 		threadStarted = false;
-		running = false;
 		notifyAll();
 		while(!deque.isEmpty()) {
 			try {
-				wait(100);
+				wait();
 			} catch (InterruptedException e) {}
 		}
 	}
@@ -125,7 +117,7 @@ public class ThreadPool {
 	 * @throws NullPointerException if runnable is null.
 	 * @throws IllegalStateException if this pool has not been started yet.
 	 */
-	public synchronized void dispatch(Runnable runnable) {
+	public void dispatch(Runnable runnable) {
 		if(runnable == null) {
 			throw new NullPointerException("runnable is null.");
 		}
