@@ -1,0 +1,14 @@
+hogehoge
+%%
+foo
+bar
+%%
+testtest
+%%
+sample
+%%
+fuga
+fuga
+%%
+end
+%%

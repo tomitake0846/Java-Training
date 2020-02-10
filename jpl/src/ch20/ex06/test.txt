@@ -1,0 +1,9 @@
+result + 10
+result - 10
+result = 10
+test = 20
+test + 10
+test -5
+sample = 15
+sample + 10
+sample = 20
