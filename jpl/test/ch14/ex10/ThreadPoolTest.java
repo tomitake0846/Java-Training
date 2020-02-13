@@ -178,13 +178,10 @@ public class ThreadPoolTest {
 
     public void testSimultaneousStarts() {
         final ThreadPool tp = new ThreadPool(1, 1);
-
         Invoker[] invokers = createInvokers(tp, Invoker.Action.START);
 
         invokeAndWait(invokers);
-
         tp.stop();
-
         assertEquals(1, countOks(invokers));
     }
 
@@ -365,7 +362,6 @@ public class ThreadPoolTest {
         final int sizeOfQueue = 10;
         ThreadPool tp = new ThreadPool(sizeOfQueue, 1);
         tp.start();
-
         // How do I implement this test method ?
         tp.stop();
         assertEquals(1, activeThreadCount());
@@ -414,16 +410,13 @@ public class ThreadPoolTest {
         final int numberOfThreads = 10;
         ThreadPool tp = new ThreadPool(10, numberOfThreads);
         tp.start();
-		System.out.println("hoge");
         // Run more tasks than the requested number of threads.
         for (int i = 0; i < numberOfThreads*2; i++) {
             tp.dispatch(task);
         }
-		System.out.println("hoge");
 
         // By the specification, stop() will wait for the terminations of all threads.
         tp.stop();
-		System.out.println("hoge");
 
         // If threads are pooled as requested correctly, then
         // threads.size() must be equal to numberOfThreads.

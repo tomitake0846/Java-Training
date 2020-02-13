@@ -44,7 +44,7 @@ public class ThreadPool {
 	private ThreadGroup tg;
 	private int queueSize;
 	private int numberOfThreads;
-	private boolean running = true;
+	private Thread processingThread;
 
 	public ThreadPool(int queueSize, int numberOfThreads) {
 		if(queueSize < 1) {
@@ -55,8 +55,42 @@ public class ThreadPool {
 		}
 		this.queueSize = queueSize;
 		this.numberOfThreads = numberOfThreads;
-		deque = new ArrayDeque<Thread>(queueSize);
-		tg = new ThreadGroup("Thred Group");
+		this.deque = new ArrayDeque<Thread>(queueSize);
+		this.tg = new ThreadGroup("Thred Group");
+
+		this.processingThread = new Thread(new Runnable(){
+			@Override
+			public synchronized void run() {
+				while(threadStarted) {
+					while(deque.isEmpty()) {
+						if(!threadStarted) {
+							break;
+						}
+						waiting();
+					}
+					//if all thread have used , wait.
+					while(tg.activeCount() >= numberOfThreads) {
+						System.out.println("fuck");
+						if(!threadStarted) {
+							break;
+						}
+						waiting();
+						notifyAll();
+					}
+					Thread t = deque.poll();
+					if(t != null) {
+						t.start();
+					}
+					notifyAll();
+					System.out.println(tg.activeCount());
+				}
+			}
+			private synchronized void waiting() {
+				try {
+					wait();
+				} catch (InterruptedException e) {}
+			}
+		},"processing");
 	}
 
 	/**
@@ -68,30 +102,9 @@ public class ThreadPool {
 		if(threadStarted) {
 			throw new IllegalStateException("Thread has been already started.");
 		}
-
 		threadStarted = true;
-
-//		//repeat until deque is empty.
-		do{
-			//if deque is Empty, wait 100 mili sec.
-			while(deque.isEmpty()) {
-				try {
-					System.out.println("hoge");
-					wait();
-//					System.out.println("hoge");
-				} catch (InterruptedException e) {}
-			}
-
-			//if all thread have used , wait 100 mili sec.
-			while(tg.activeCount() >= numberOfThreads) {
-				try {
-					wait(100);
-					System.out.println("hoge");
-				} catch (InterruptedException e) {}
-			}
-			deque.poll().start();
-			notifyAll();
-		}while(running);
+		processingThread.start();
+		notifyAll();
 	}
 
 	/**
@@ -106,11 +119,11 @@ public class ThreadPool {
 			throw new IllegalStateException("Thread has not been started.");
 		}
 		threadStarted = false;
-		running = false;
 		notifyAll();
-		while(!deque.isEmpty()) {
+
+		if(!deque.isEmpty()) {
 			try {
-				wait(100);
+				processingThread.join();
 			} catch (InterruptedException e) {}
 		}
 	}
@@ -132,10 +145,12 @@ public class ThreadPool {
 		if(!threadStarted) {
 			throw new IllegalStateException("Thread has not been started.");
 		}
+
 		while(deque.size() >= queueSize) {
+			System.out.println("size:"+deque.size());
+			System.out.println("max :"+queueSize);
 			try {
 				wait();
-				System.out.println("dispatch");
 			} catch (InterruptedException e) {}
 		}
 		deque.add(new Thread(tg,runnable));
