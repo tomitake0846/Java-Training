@@ -44,6 +44,7 @@ public class ThreadPool {
 	private ThreadGroup tg;
 	private int queueSize;
 	private int numberOfThreads;
+	private Thread processingThread;
 
 	public ThreadPool(int queueSize, int numberOfThreads) {
 		if(queueSize < 1) {
@@ -54,8 +55,42 @@ public class ThreadPool {
 		}
 		this.queueSize = queueSize;
 		this.numberOfThreads = numberOfThreads;
-		deque = new ArrayDeque<Thread>(queueSize);
-		tg = new ThreadGroup("Thred Group");
+		this.deque = new ArrayDeque<Thread>(queueSize);
+		this.tg = new ThreadGroup("Thred Group");
+
+		this.processingThread = new Thread(new Runnable(){
+			@Override
+			public synchronized void run() {
+				while(threadStarted) {
+					while(deque.isEmpty()) {
+						if(!threadStarted) {
+							break;
+						}
+						waiting();
+					}
+					//if all thread have used , wait.
+					while(tg.activeCount() >= numberOfThreads) {
+						System.out.println("fuck");
+						if(!threadStarted) {
+							break;
+						}
+						waiting();
+						notifyAll();
+					}
+					Thread t = deque.poll();
+					if(t != null) {
+						t.start();
+					}
+					notifyAll();
+					System.out.println(tg.activeCount());
+				}
+			}
+			private synchronized void waiting() {
+				try {
+					wait();
+				} catch (InterruptedException e) {}
+			}
+		},"processing");
 	}
 
 	/**
@@ -63,27 +98,12 @@ public class ThreadPool {
 	 *
 	 * @throws IllegalStateException if threads has been already started.
 	 */
-	public void start() {
+	public synchronized void start() {
 		if(threadStarted) {
 			throw new IllegalStateException("Thread has been already started.");
 		}
-
 		threadStarted = true;
-		while(deque.isEmpty()) {
-			try {
-				synchronized(this.deque) {
-					wait();
-				}
-			} catch (InterruptedException e) {}
-		}
-
-		//if all thread have used , wait 100 mili sec.
-		while(tg.activeCount() >= numberOfThreads) {
-			try {
-				wait(100);
-			} catch (InterruptedException e) {}
-		}
-		deque.poll().start();
+		processingThread.start();
 		notifyAll();
 	}
 
@@ -94,15 +114,16 @@ public class ThreadPool {
 	 *
 	 * @throws IllegalStateException if threads has not been started.
 	 */
-	public void stop() {
+	public synchronized void stop() {
 		if(!threadStarted) {
 			throw new IllegalStateException("Thread has not been started.");
 		}
 		threadStarted = false;
 		notifyAll();
-		while(!deque.isEmpty()) {
+
+		if(!deque.isEmpty()) {
 			try {
-				wait();
+				processingThread.join();
 			} catch (InterruptedException e) {}
 		}
 	}
@@ -117,17 +138,19 @@ public class ThreadPool {
 	 * @throws NullPointerException if runnable is null.
 	 * @throws IllegalStateException if this pool has not been started yet.
 	 */
-	public void dispatch(Runnable runnable) {
+	public synchronized void dispatch(Runnable runnable) {
 		if(runnable == null) {
 			throw new NullPointerException("runnable is null.");
 		}
 		if(!threadStarted) {
 			throw new IllegalStateException("Thread has not been started.");
 		}
+
 		while(deque.size() >= queueSize) {
+			System.out.println("size:"+deque.size());
+			System.out.println("max :"+queueSize);
 			try {
 				wait();
-				System.out.println("dispatch");
 			} catch (InterruptedException e) {}
 		}
 		deque.add(new Thread(tg,runnable));

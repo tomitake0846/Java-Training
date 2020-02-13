@@ -178,13 +178,10 @@ public class ThreadPoolTest {
 
     public void testSimultaneousStarts() {
         final ThreadPool tp = new ThreadPool(1, 1);
-
         Invoker[] invokers = createInvokers(tp, Invoker.Action.START);
 
         invokeAndWait(invokers);
-
         tp.stop();
-
         assertEquals(1, countOks(invokers));
     }
 
@@ -365,7 +362,6 @@ public class ThreadPoolTest {
         final int sizeOfQueue = 10;
         ThreadPool tp = new ThreadPool(sizeOfQueue, 1);
         tp.start();
-
         // How do I implement this test method ?
         tp.stop();
         assertEquals(1, activeThreadCount());

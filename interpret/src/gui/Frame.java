@@ -59,6 +59,7 @@ public class Frame extends JFrame implements ActionListener{
 			contentPane.add(ip,BorderLayout.CENTER);
 			interpretPanel = ip;
 			setVisible(true);
+			ip.update();
 
 		} catch (InterpretException exception) {
 			//display dialog with error message.
