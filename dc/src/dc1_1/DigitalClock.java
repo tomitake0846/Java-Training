@@ -8,7 +8,6 @@ public class DigitalClock{
 		this.canvas = new ClockCanvas(width,height);
 		this.frame.add(canvas);
 		this.frame.addWindowListener(ButtonFactory.createCloseButton());
-
 	}
 
 	public void run() {
