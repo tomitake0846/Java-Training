@@ -1,4 +1,4 @@
-package processing;
+package processing.interpret;
 
 public class InterpretException extends Exception{
 	private Exception e;
