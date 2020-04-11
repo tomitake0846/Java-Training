@@ -35,7 +35,7 @@ public abstract class MemberPanel extends JPanel{
 		}
 		return list;
 	}
-	protected String modifierString(int v) {
+	public String modifierString(int v) {
 	    if (Modifier.isPrivate(v))  return "private";
 	    if (Modifier.isPublic(v))  return "public";
 	    if (Modifier.isProtected(v)) return "protected";

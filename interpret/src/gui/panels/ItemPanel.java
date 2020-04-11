@@ -19,7 +19,7 @@ public class ItemPanel extends JPanel implements MouseListener{
 	private String modifier;
 	private MemberPanel mp;
 
-	ItemPanel(MemberPanel mp,String modifier,String itemName,String...strings) {
+	public ItemPanel(MemberPanel mp,String modifier,String itemName,String...strings) {
 		this.modifier = modifier;
 		this.itemName = itemName;
 		this.mp = mp;

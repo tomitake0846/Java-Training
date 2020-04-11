@@ -6,31 +6,30 @@ import java.util.Arrays;
 
 public class ConstructorInterpret {
 
-	private final Object INSTENCE;
-	private final Constructor<?>[] CONSTRUCTORS;
+	private Class<?> c;
+	private Constructor<?>[] CONSTRUCTORS;
 
-	public ConstructorInterpret(String className,Object...args) throws InterpretException {
+	public ConstructorInterpret(String className) throws InterpretException{
 		try {
-			Class<?>[] params = new Class<?>[args.length];
-			for(int i=0;i<args.length;i++) {
-				params[i] = args[i].getClass();
-			}
-			Class<?> c = Class.forName(className);
-			Constructor<?> constructor = c.getConstructor(params);
-			this.INSTENCE = constructor.newInstance(args);
+			this.c = Class.forName(className);
 			this.CONSTRUCTORS = c.getConstructors();
-
-		} catch (ClassNotFoundException | InstantiationException |
-				IllegalAccessException | NoSuchMethodException | SecurityException |
-				IllegalArgumentException | InvocationTargetException e) {
+		} catch (ClassNotFoundException | SecurityException |
+				IllegalArgumentException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			throw new InterpretException("No such class ["+className+"] or arguments [" + Arrays.toString(args) +"]",e);
+			throw new InterpretException("No such class ["+className+"]",e);
 		}
 	}
 
-	public Object getInstance() {
-		return this.INSTENCE;
+	public Object createInstance(Class<?>[] argumentTypes,Object...args) throws InterpretException {
+		try {
+			Constructor<?> constructor = c.getConstructor(argumentTypes);
+			return constructor.newInstance(args);
+		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			throw new InterpretException("Illegal arguments [" + Arrays.toString(args) +"]",e);
+		}
 	}
 
 	public Constructor<?>[] getConstructors() {
