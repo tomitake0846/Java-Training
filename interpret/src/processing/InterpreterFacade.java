@@ -68,14 +68,14 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 		return this.mi.getMethods();
 	}
 	@Override
-	public void consumer(String methodName,Object...args) throws InterpretException {
-		Class<?>[] types = mi.getParametersType(methodName);
-		Object[] v = convert(types,(String[])args);
-		this.mi.consumer(methodName,v);
+	public void consumer(String methodName,Class<?>[] argsType,String[] args) throws InterpretException {
+		Object[] v = convert(argsType,args);
+		this.mi.consumer(methodName,argsType,v);
 	}
 	@Override
-	public Object function(String methodName,Object...args) throws InterpretException {
-		return this.mi.function(methodName, args);
+	public Object function(String methodName,Class<?>[] argsType,String[] args) throws InterpretException {
+		Object[] v = convert(argsType,args);
+		return this.mi.function(methodName,argsType, v);
 	}
 
 	//ConstructorInterpret Facade

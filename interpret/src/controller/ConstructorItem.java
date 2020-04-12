@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 
 import javax.swing.JTextField;
 
-public class ConstructorItem {
+public class ConstructorItem extends Item{
 
 	private Constructor<?> constructor;
 	private static ConstructorItem selectedItem;
@@ -15,8 +15,8 @@ public class ConstructorItem {
 		this.textFields = getArgsTextField();
 	}
 
-	public int getModifier() {
-		return this.constructor.getModifiers();
+	public String getModifier() {
+		return modifierString(this.constructor.getModifiers());
 	}
 
 	public String getConstructorName() {
@@ -28,12 +28,13 @@ public class ConstructorItem {
 	}
 
 	public void selected() {
-		selectedItem = this;
+		ConstructorItem.selectedItem = this;
 	}
 
 	public static ConstructorItem getSelectedItem() {
 		return ConstructorItem.selectedItem;
 	}
+
 	public String[] getArgs() {
 		String[] args = new String[this.textFields.length];
 		for(int i=0;i<args.length;i++) {
@@ -53,5 +54,14 @@ public class ConstructorItem {
 			textFields[i] = new JTextField(types[i].getTypeName());
 		}
 		return textFields;
+	}
+
+	public String argsToString(Constructor<?> constructor) {
+		StringBuilder sb = new StringBuilder("(");
+		for(Class<?> param : constructor.getParameterTypes()) {
+			String name = trimPackageName(param.getName());
+			sb.append(name+",");
+		}
+		return sb.toString().replaceAll(",$","") + ")";
 	}
 }

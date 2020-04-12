@@ -1,4 +1,4 @@
-package gui.constructorPanel;
+package gui.FieldPanel;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,28 +10,28 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import controller.ConstructorItem;
+import controller.FieldItem;
 import gui.Frame;
 import processing.interpret.InterpretException;
 
-public class ConstructorUpdateDialog extends JDialog{
+public class FieldUpdateDialog extends JDialog{
 
-	private ConstructorItem ci;
-	public ConstructorUpdateDialog(String title,ConstructorItem ci) {
-		super(Frame.FRAME,title);
-		this.ci = ci;
+	private FieldItem fi;
+	public FieldUpdateDialog(String title,FieldItem fi) {
+		this.fi = fi;
 		setSize(800,600);
 	}
 
-
 	public void visible() {
-		JTextField[] fields = ci.getTextFields();
-		setLayout(new GridLayout(1,fields.length));
-		add(new JLabel(ci.getModifier()));
-		add(new JLabel(ci.trimPackageName(ci.getConstructorName())));
-		for(JTextField field :fields) {
-			add(field);
-		}
+		JTextField field = fi.getTextField();
+
+		//really??
+		setLayout(new GridLayout(1,1));
+
+		add(new JLabel(fi.getModifier()));
+		add(new JLabel(fi.trimPackageName(fi.getFieldName())));
+		add(field);
+
 		add(getUpdateButton());
 		add(getCancelButton());
 		setVisible(true);
@@ -45,7 +45,7 @@ public class ConstructorUpdateDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				String message;
 				try {
-					Frame.controller.createInstance();
+					Frame.controller.setField();
 					message = "update success.";
 					JOptionPane.showMessageDialog(Frame.FRAME,message);
 					dispose();

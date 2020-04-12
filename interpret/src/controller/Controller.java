@@ -3,10 +3,10 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import gui.FieldPanel.FieldPanel;
+import gui.MethodPanel.MethodPanel;
 import gui.constructorPanel.ConstructorPanel;
-import gui.panels.FieldPanel;
 import gui.panels.MemberPanel;
-import gui.panels.MethodPanel;
 import processing.InterpreterFacade;
 import processing.interpret.InterpretException;
 
@@ -60,6 +60,30 @@ public class Controller {
 
 		panelMap.put(Controller.METHOD,new MethodPanel(interpreter));
 
+	}
+
+	public Object executeMethod() throws InterpretException {
+		MethodItem mi = MethodItem.getSelectedItem();
+		String methodName = mi.getMethodName();
+		String[] args = mi.getArgs();
+		Class<?>[] argsType = mi.getMethod().getParameterTypes();
+
+		//generics 挙動不審
+
+		if("void".equals(mi.getReturnType())) {
+			this.interpreter.consumer(methodName,argsType,args);
+			return null;
+		} else {
+			return this.interpreter.function(methodName,argsType,args);
+		}
+	}
+
+	public void setField() throws InterpretException {
+		FieldItem fi = FieldItem.getSelectedItem();
+		String fieldName = fi.getFieldName();
+		String newValue = fi.getTextField().getText();
+
+		interpreter.setField(fieldName, newValue);
 	}
 
 }

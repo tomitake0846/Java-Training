@@ -4,17 +4,14 @@ import java.awt.GridLayout;
 import java.lang.reflect.Constructor;
 
 import controller.ConstructorItem;
-import gui.panels.ItemPanel;
 import gui.panels.MemberPanel;
 import processing.ConstructorInterface;
 import processing.interpret.InterpretException;
 
 public class ConstructorPanel extends MemberPanel{
 	private Constructor<?>[] constructors;
-	private ConstructorInterface interpreteter;
 	public ConstructorPanel(ConstructorInterface interpreter) throws InterpretException {
-		super("modifier","field name","args");
-		this.interpreteter = interpreter;
+		super("modifier","Constructor name","args");
 		constructors = interpreter.getConstructors();
 		createConstructorPanel();
 	}
@@ -29,17 +26,4 @@ public class ConstructorPanel extends MemberPanel{
 		}
 	}
 
-	//"bug"
-	private String args(Constructor<?> constructor) {
-		StringBuilder sb = new StringBuilder("(");
-		for(Class<?> param : constructor.getParameterTypes()) {
-			sb.append(param.getName()+",");
-		}
-		return sb.toString().replaceAll(",$","") + ")";
-	}
-
-	@Override
-	public void update(ItemPanel itemPanel) throws InterpretException {
-		System.out.println("clicked!");
-	}
 }

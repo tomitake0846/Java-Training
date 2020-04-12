@@ -17,11 +17,9 @@ public class ConstructorItemPanel extends JPanel implements MouseListener{
 		setLayout(new GridLayout(1,ci.getArgs().length));
 		setName(ci.getConstructorName());
 
-		add(new JLabel(""+ci.getModifier()));
-		add(new JLabel(ci.getConstructorName()));
-		for(String arg : ci.getArgs()) {
-			add(new JLabel(arg));
-		}
+		add(new JLabel(ci.getModifier()));
+		add(new JLabel(ci.trimPackageName(ci.getConstructorName())));
+		add(new JLabel(ci.argsToString(ci.getConstructor())));
 		addMouseListener(this);
 	}
 

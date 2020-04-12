@@ -8,12 +8,9 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import processing.interpret.InterpretException;
-
-public abstract class MemberPanel extends JPanel{
+public class MemberPanel extends JPanel{
 
 	private JPanel titlePanel;
-	public abstract void update(ItemPanel itemPanel) throws InterpretException;
 
 	public MemberPanel(String...strings) {
 		this.titlePanel = initTitlePanel(strings);
@@ -41,9 +38,6 @@ public abstract class MemberPanel extends JPanel{
 	    if (Modifier.isProtected(v)) return "protected";
 	    return "";
 	}
-//	protected Object convert(String paramName,String type) {
-//
-//	}
 
 	private JPanel initTitlePanel(String...strings) {
 		JPanel title = new JPanel();

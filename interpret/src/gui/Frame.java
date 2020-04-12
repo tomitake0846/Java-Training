@@ -20,10 +20,10 @@ import processing.interpret.InterpretException;
 public class Frame extends JFrame implements ActionListener{
 
 	public static final Frame FRAME = new Frame();
+	public static Controller controller = new Controller();
 
 	private MemberPanel displayPanel;
 	private JTextField text;
-	private Controller controller;
 
 	private JButton FieldButton;
 	private JButton MethodButton;
@@ -75,7 +75,7 @@ public class Frame extends JFrame implements ActionListener{
 			}
 			if(Controller.CONSTRUCTOR.equals(command)) {
 				String className = this.text.getText();
-				this.controller = new Controller();
+				Frame.controller = new Controller();
 				displayPanel = controller.getDisplayPanel(command,className);
 			}
 
@@ -105,27 +105,6 @@ public class Frame extends JFrame implements ActionListener{
 		}
 
 		setVisible(true);
-	}
-
-	public ActionListener getUpdateListener() {
-		return new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String message;
-				try {
-					controller.createInstance();
-					message = "update success.";
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
-					dispose();
-				} catch (InterpretException exception) {
-					message = "exception occurred.\n"+
-					  exception.getMessage() +"\n" +
-					  exception.getException().toString();
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
-				}
-				Frame.FRAME.repaint();
-			}
-		};
 	}
 
 	private JButton getButton(String name) {
