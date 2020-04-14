@@ -1,8 +1,10 @@
-package gui.panels;
+package gui.FieldPanel;
 
 import java.awt.GridLayout;
 import java.lang.reflect.Field;
 
+import controller.FieldItem;
+import gui.panels.MemberPanel;
 import processing.FieldInterface;
 import processing.interpret.InterpretException;
 
@@ -22,17 +24,8 @@ public class FieldPanel extends MemberPanel{
 		add(getTitlePanel());
 		for(Field field : fields) {
 			String fieldName = field.getName();
-			String modifier = modifierString(field.getModifiers());
-			String fieldValue = interpret.getFieldValue(fieldName).toString();
-			add(new ItemPanel(this,modifier,fieldName,fieldValue));
+			FieldItem fi = new FieldItem(field,interpret.getFieldValue(fieldName).toString());
+			add(new FieldItemPanel(fi));
 		}
-	}
-
-	@Override
-	public void update(ItemPanel itemPanel) throws InterpretException {
-		System.out.println("Clicked!");
-		String fieldName = itemPanel.getItemName();
-		String value = itemPanel.getParams()[0];
-		this.interpret.setField(fieldName, value);
 	}
 }

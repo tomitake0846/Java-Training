@@ -14,29 +14,35 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 	private FieldInterpret fi;
 	private MethodInterpret mi;
 	private ConstructorInterpret ci;
-	public static final InterpreterFacade INTERPRETER = new InterpreterFacade();
+	private Object instance;
 
-	//singleton
-	private InterpreterFacade() {};
+	public InterpreterFacade(String className) throws InterpretException {
+		this.ci = new ConstructorInterpret(className);
+	}
 
-	public void Construct(String className,Object...args) throws InterpretException {
+	public boolean hasInstance() {
+		return this.instance != null;
+	}
+
+	@Override
+	public void Construct(Constructor<?> target,String...args) throws InterpretException {
 		try {
-			//how implements?
-			this.ci = new ConstructorInterpret(className,args);
+
+			Object[] objects = convert(target.getParameterTypes(),args);
 
 			// create instance with ConstructorInterpret
-			Object instance = ci.getInstance();
+			this.instance = ci.createInstance(getArgumentsType(objects),objects);
 
 			// create Field Interpret
-			this.fi = new FieldInterpret(instance);
+			this.fi = new FieldInterpret(this.instance);
 
 			// create Method Interpret
-			this.mi = new MethodInterpret(instance);
+			this.mi = new MethodInterpret(this.instance);
 
 		} catch (SecurityException | IllegalArgumentException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			throw new InterpretException("No such class ["+className+"] or arguments [" + Arrays.toString(args) +"]",e);
+			throw new InterpretException("Illegal arguments [" + Arrays.toString(args) +"]",e);
 		}
 	}
 
@@ -62,14 +68,14 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 		return this.mi.getMethods();
 	}
 	@Override
-	public void consumer(String methodName,Object...args) throws InterpretException {
-		Class<?>[] types = mi.getParametersType(methodName);
-		Object[] v = convert(types,(String[])args);
-		this.mi.consumer(methodName,v);
+	public void consumer(String methodName,Class<?>[] argsType,String[] args) throws InterpretException {
+		Object[] v = convert(argsType,args);
+		this.mi.consumer(methodName,argsType,v);
 	}
 	@Override
-	public Object function(String methodName,Object...args) throws InterpretException {
-		return this.mi.function(methodName, args);
+	public Object function(String methodName,Class<?>[] argsType,String[] args) throws InterpretException {
+		Object[] v = convert(argsType,args);
+		return this.mi.function(methodName,argsType, v);
 	}
 
 	//ConstructorInterpret Facade
@@ -89,6 +95,7 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 		case "float" : return Float.parseFloat(value);
 		case "double" : return Double.parseDouble(value);
 		case "boolean" : return Boolean.parseBoolean(value);
+		case "java.lang.String" : return value;
 		default : return null;
 		}
 	}
@@ -98,5 +105,23 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 			result[i] = convert(types[i],args[i]);
 		}
 		return result;
+	}
+	private Class<?>[] getArgumentsType(Object[] args) {
+
+		Class<?>[] params = new Class<?>[args.length];
+		for(int i=0;i<args.length;i++) {
+			switch(args[i].getClass().getName()) {
+			case "java.lang.Character" : params[i] = char.class; break;
+			case "java.lang.Short": params[i] = short.class; break;
+			case "java.lang.Integer" : params[i] = int.class; break;
+			case "java.lang.Long" : params[i] = long.class; break;
+			case "java.lang.Byte" : params[i] = byte.class; break;
+			case "java.lang.Float" : params[i] = float.class; break;
+			case "java.lang.Double" : params[i] = double.class; break;
+			case "java.lang.Boolean" : params[i] = boolean.class; break;
+			default : params[i] = args[i].getClass();
+			}
+		}
+		return params;
 	}
 }
