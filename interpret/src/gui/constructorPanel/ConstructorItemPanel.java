@@ -2,14 +2,13 @@ package gui.constructorPanel;
 
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import controller.ConstructorItem;
+import gui.panels.ItemPanel;
 
-public class ConstructorItemPanel extends JPanel implements MouseListener{
+public class ConstructorItemPanel extends ItemPanel{
 
 	private ConstructorItem ci;
 	public ConstructorItemPanel(ConstructorItem ci) {
@@ -29,12 +28,4 @@ public class ConstructorItemPanel extends JPanel implements MouseListener{
 		ConstructorUpdateDialog dialog = new ConstructorUpdateDialog("test",ci);
 		dialog.visible();
 	}
-	@Override
-	public void mousePressed(MouseEvent e) {}
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e) {}
 }

@@ -12,7 +12,7 @@ public class MethodPanel extends MemberPanel{
 	private MethodInterface interpret;
 
 	public MethodPanel(MethodInterface interpreter) throws InterpretException {
-		super("modifier","return Type","Method name","args");
+		super(interpreter.getMethods().length,"modifier","return Type","Method name","args");
 		interpret = interpreter;
 		createMethodPanel();
 	}

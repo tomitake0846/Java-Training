@@ -2,14 +2,13 @@ package gui.FieldPanel;
 
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import controller.FieldItem;
+import gui.panels.ItemPanel;
 
-public class FieldItemPanel extends JPanel implements MouseListener{
+public class FieldItemPanel extends ItemPanel{
 
 	private FieldItem fi;
 	public FieldItemPanel(FieldItem fi) {
@@ -32,13 +31,5 @@ public class FieldItemPanel extends JPanel implements MouseListener{
 		FieldUpdateDialog dialog = new FieldUpdateDialog("test",fi);
 		dialog.visible();
 	}
-	@Override
-	public void mousePressed(MouseEvent e) {}
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e) {}
 
 }

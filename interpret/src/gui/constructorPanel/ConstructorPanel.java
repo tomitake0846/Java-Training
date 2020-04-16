@@ -11,7 +11,7 @@ import processing.interpret.InterpretException;
 public class ConstructorPanel extends MemberPanel{
 	private Constructor<?>[] constructors;
 	public ConstructorPanel(ConstructorInterface interpreter) throws InterpretException {
-		super("modifier","Constructor name","args");
+		super(interpreter.getConstructors().length,"modifier","Constructor name","args");
 		constructors = interpreter.getConstructors();
 		createConstructorPanel();
 	}
