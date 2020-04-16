@@ -18,10 +18,14 @@ public class MethodInterpret {
 	}
 
 	public void consumer(String methodName,Object...args) throws InterpretException {
-		Method method;
 		Class<?> [] params = getParamsClass(args);
+		consumer(methodName,params,args);
+	}
+
+	public void consumer(String methodName,Class<?>[] argsType,Object...args) throws InterpretException {
+		Method method;
 		try {
-			method = this.instance.getClass().getMethod(methodName,params);
+			method = this.instance.getClass().getMethod(methodName,argsType);
 			method.invoke(this.instance, args);
 		} catch (NoSuchMethodException | SecurityException |
 				IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -30,11 +34,17 @@ public class MethodInterpret {
 			throw new InterpretException("Illegal methodName ["+methodName+"] or arguments [" + Arrays.toString(args) +"]",e);
 		}
 	}
+
+
 	public Object function(String methodName,Object...args) throws InterpretException {
-		Method method;
 		Class<?> [] params = getParamsClass(args);
+		return function(methodName,params,args);
+	}
+
+	public Object function(String methodName,Class<?>[] argsType,Object...args) throws InterpretException {
+		Method method;
 		try {
-			method = this.instance.getClass().getMethod(methodName,params);
+			method = this.instance.getClass().getMethod(methodName,argsType);
 			return method.invoke(this.instance,args);
 
 		} catch (NoSuchMethodException | SecurityException |
@@ -44,6 +54,7 @@ public class MethodInterpret {
 			throw new InterpretException("Illegal methodName ["+methodName+"] or arguments [" + Arrays.toString(args) +"]",e);
 		}
 	}
+
 	public Class<?>[] getParametersType(String methodName) throws InterpretException {
 		Method method;
 		try {

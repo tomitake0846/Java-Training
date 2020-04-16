@@ -5,8 +5,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,28 +13,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import gui.panels.ConstructorPanel;
-import gui.panels.FieldPanel;
+import controller.Controller;
 import gui.panels.MemberPanel;
-import gui.panels.MethodPanel;
-import processing.InterpreterFacade;
 import processing.interpret.InterpretException;
 
 public class Frame extends JFrame implements ActionListener{
-	public static final String CONSTRUCTOR = "Constructor";
-	public static final String FIELD = "Field";
-	public static final String METHOD = "Method";
+
 	public static final Frame FRAME = new Frame();
-	private boolean hasAlreadySubmited = false;
-	public InterpreterFacade interpreter;
+	public static Controller controller = new Controller();
 
 	private MemberPanel displayPanel;
 	private JTextField text;
 
-	private Map<String,MemberPanel> panelMap;
+	private JButton FieldButton;
+	private JButton MethodButton;
 
 	public Frame() {
-		panelMap = new HashMap<String,MemberPanel>();
 		initVisual();
 		initTextBox();
 		setVisible(true);
@@ -54,46 +46,44 @@ public class Frame extends JFrame implements ActionListener{
 		text = new JTextField();
 		text.setPreferredSize(new Dimension(250,30));
 
+		FieldButton = getButton(Controller.FIELD);
+		MethodButton = getButton(Controller.METHOD);
+		FieldButton.setVisible(false);
+		MethodButton.setVisible(false);
+
 		//set component
 		textPanel.add(text);
-		textPanel.add(getButton("submit"));
+		textPanel.add(getButton(Controller.CONSTRUCTOR));
+		textPanel.add(FieldButton);
+		textPanel.add(MethodButton);
 
 		Container contentPane = getContentPane();
 		setLayout(new BoxLayout(contentPane,BoxLayout.Y_AXIS));
 		contentPane.add(textPanel,BorderLayout.NORTH);
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Container contentPane = getContentPane();
 		try {
 			String command = e.getActionCommand();
-			if("submit".equals(command)) {
-				//setting Button
-				setPanelButton(contentPane);
-
-				String className = this.text.getText();
-				this.interpreter = InterpreterFacade.INTERPRETER;
-				this.interpreter.Construct(className);
-				//create new ConstructorPanel , FieldPanel , and MethodPanel.
-				//When input illegal class name [value of text.getText()] , thrown InterpretException.
-				panelMap.put(CONSTRUCTOR,new ConstructorPanel(interpreter));
-				panelMap.put(FIELD,new FieldPanel(interpreter));
-				panelMap.put(METHOD,new MethodPanel(interpreter));
-				command = CONSTRUCTOR;
-			}
 
 			//remove old Panel.
 			if(displayPanel != null) {
-				contentPane.remove(displayPanel);
+				contentPane.remove(displayPanel.getMainPane());
 				displayPanel.setVisible(false);
+			}
+			if(Controller.CONSTRUCTOR.equals(command)) {
+				String className = this.text.getText();
+				Frame.controller = new Controller();
+				displayPanel = controller.getDisplayPanel(command,className);
 			}
 
 			//add new Panel
-			MemberPanel panel = panelMap.get(command);
-			contentPane.add(panel);
+			MemberPanel panel = controller.getDisplayPanel(command);
+			contentPane.add(panel.getMainPane());
 			displayPanel = panel;
-			displayPanel.setVisible(true);
-			setVisible(true);
+			repaint();
 
 		} catch (InterpretException exception) {
 			//display dialog with error message.
@@ -101,18 +91,22 @@ public class Frame extends JFrame implements ActionListener{
 		}
 	}
 
-	private void setPanelButton(Container content) {
-		if(hasAlreadySubmited) {
-			return;
+	@Override
+	public void repaint() {
+		if(displayPanel != null) {
+			displayPanel.setVisible(true);
 		}
-		JPanel buttonPanel = new JPanel();
-		buttonPanel.add(getButton(CONSTRUCTOR));
-		buttonPanel.add(getButton(FIELD));
-		buttonPanel.add(getButton(METHOD));
-		content.add(buttonPanel,BorderLayout.NORTH);
+		if(controller.hasInstance()) {
+			this.FieldButton.setVisible(true);
+			this.MethodButton.setVisible(true);
+		} else {
+			this.FieldButton.setVisible(false);
+			this.MethodButton.setVisible(false);
+		}
+
 		setVisible(true);
-		hasAlreadySubmited = true;
 	}
+
 	private JButton getButton(String name) {
 		JButton button = new JButton(name);
 		button.addActionListener(this);

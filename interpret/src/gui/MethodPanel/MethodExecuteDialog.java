@@ -1,4 +1,4 @@
-package gui;
+package gui.MethodPanel;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,31 +10,25 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import gui.panels.ItemPanel;
-import gui.panels.MemberPanel;
+import controller.MethodItem;
+import gui.Frame;
 import processing.interpret.InterpretException;
 
-public class ChangeDialog extends JDialog{
-
-	private ItemPanel itemPanel;
-	private MemberPanel mp;
-
-	public ChangeDialog(String title,ItemPanel itemPanel,MemberPanel mp) {
+public class MethodExecuteDialog extends JDialog{
+	private MethodItem mi;
+	public MethodExecuteDialog(String title, MethodItem mi) {
 		super(Frame.FRAME,title);
-		this.itemPanel = itemPanel;
-		this.mp = mp;
+		this.mi = mi;
 		setSize(800,600);
 	}
 
 	public void visible() {
-		add(mp.getTitlePanel());
-		String[] params = itemPanel.getParams();
-
-		setLayout(new GridLayout(1,params.length));
-		add(new JLabel(itemPanel.getModifier()));
-		add(new JLabel(itemPanel.getItemName()));
-		for(String str : params) {
-			add(new JTextField(str));
+		JTextField[] fields = mi.getTextFields();
+		setLayout(new GridLayout(1,fields.length));
+		add(new JLabel(mi.getModifier()));
+		add(new JLabel(mi.trimPackageName(mi.getMethodName())));
+		for(JTextField field :fields) {
+			add(field);
 		}
 		add(getUpdateButton());
 		add(getCancelButton());
@@ -43,22 +37,28 @@ public class ChangeDialog extends JDialog{
 
 	private JButton getUpdateButton() {
 		JButton button = new JButton("update");
+
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO 自動生成されたメソッド・スタブ
 				String message;
 				try {
-					mp.update(itemPanel);
-					message = "update success.";
-				} catch(InterpretException exception) {
+					Object returnVal = Frame.controller.executeMethod();
+					message = "execute success.";
+
+					if(returnVal != null) {
+						message += "\nreturn :"+returnVal.toString();
+					}
+
+					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					dispose();
+				} catch (InterpretException exception) {
 					message = "exception occurred.\n"+
-							  exception.getMessage() +"\n" +
-							  exception.getException().toString();
+							exception.getMessage() +"\n" +
+							exception.getException().toString();
+					JOptionPane.showMessageDialog(Frame.FRAME,message);
 				}
-				JOptionPane.showMessageDialog(mp,message);
-				mp.repaint();
-				dispose();
+				Frame.FRAME.repaint();
 			}
 		});
 		return button;
@@ -69,7 +69,6 @@ public class ChangeDialog extends JDialog{
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO 自動生成されたメソッド・スタブ
 				dispose();
 			}
 		});
