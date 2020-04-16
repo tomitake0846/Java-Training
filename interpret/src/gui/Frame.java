@@ -70,7 +70,7 @@ public class Frame extends JFrame implements ActionListener{
 
 			//remove old Panel.
 			if(displayPanel != null) {
-				contentPane.remove(displayPanel);
+				contentPane.remove(displayPanel.getMainPane());
 				displayPanel.setVisible(false);
 			}
 			if(Controller.CONSTRUCTOR.equals(command)) {
@@ -81,7 +81,7 @@ public class Frame extends JFrame implements ActionListener{
 
 			//add new Panel
 			MemberPanel panel = controller.getDisplayPanel(command);
-			contentPane.add(panel);
+			contentPane.add(panel.getMainPane());
 			displayPanel = panel;
 			repaint();
 

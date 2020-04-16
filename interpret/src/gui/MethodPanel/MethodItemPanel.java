@@ -2,14 +2,13 @@ package gui.MethodPanel;
 
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import controller.MethodItem;
+import gui.panels.ItemPanel;
 
-public class MethodItemPanel extends JPanel implements MouseListener{
+public class MethodItemPanel extends ItemPanel{
 	private MethodItem mi;
 
 	public MethodItemPanel(MethodItem mi) {
@@ -31,12 +30,4 @@ public class MethodItemPanel extends JPanel implements MouseListener{
 		MethodExecuteDialog dialog = new MethodExecuteDialog("test",mi);
 		dialog.visible();
 	}
-	@Override
-	public void mousePressed(MouseEvent e) {}
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e) {}
 }

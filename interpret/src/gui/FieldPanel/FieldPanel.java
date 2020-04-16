@@ -12,7 +12,7 @@ public class FieldPanel extends MemberPanel{
 	private FieldInterface interpret;
 
 	public FieldPanel(FieldInterface interpreter) throws InterpretException{
-		super("modifier","field name","value");
+		super(interpreter.getFields().length,"modifier","field name","value");
 		interpret = interpreter;
 		createFieldPanel();
 	}

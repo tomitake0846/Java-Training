@@ -9,6 +9,7 @@ public class FieldInterpret {
 	public FieldInterpret(Object instance) {
 		this.instance = instance;
 		this.fields = instance.getClass().getFields();
+//		this.fields = instance.getClass().getDeclaredFields();
 	}
 
 	public void setField(String fieldName,Object value) throws InterpretException {
@@ -59,7 +60,8 @@ public class FieldInterpret {
 	private Field getField(String fieldName)  throws InterpretException {
 		try {
 			Field field;
-			field = this.instance.getClass().getDeclaredField(fieldName);
+//			field = this.instance.getClass().getDeclaredField(fieldName);
+			field = this.instance.getClass().getField(fieldName);
 //			field.setAccessible(true);
 			return field;
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException e) {
@@ -70,7 +72,6 @@ public class FieldInterpret {
 	}
 
 	private void setPrimitiveField(Field field,Object value) throws InterpretException {
-		System.out.println(field.getType().getName());
 
 		try {
 		switch(field.getType().getName()) {
