@@ -11,8 +11,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.ConstructorItem;
+<<<<<<< Updated upstream
 import gui.Frame;
 import gui.panels.UpdateDialog;
+=======
+import gui.SingleInstanceFrame;
+>>>>>>> Stashed changes
 import processing.interpret.InterpretException;
 
 public class ConstructorUpdateDialog extends UpdateDialog{
@@ -44,17 +48,17 @@ public class ConstructorUpdateDialog extends UpdateDialog{
 			public void actionPerformed(ActionEvent e) {
 				String message;
 				try {
-					Frame.controller.createInstance();
+					SingleInstanceFrame.controller.createInstance();
 					message = "update success.";
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 					dispose();
 				} catch (InterpretException exception) {
 					message = "exception occurred.\n"+
 							exception.getMessage() +"\n" +
 							exception.getException().toString();
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 				}
-				Frame.FRAME.repaint();
+				SingleInstanceFrame.FRAME.repaint();
 			}
 		});
 		return button;

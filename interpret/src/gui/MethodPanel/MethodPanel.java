@@ -3,6 +3,7 @@ package gui.MethodPanel;
 import java.awt.GridLayout;
 import java.lang.reflect.Method;
 
+import controller.Controller;
 import controller.MethodItem;
 import gui.panels.MemberPanel;
 import processing.MethodInterface;
@@ -12,7 +13,7 @@ public class MethodPanel extends MemberPanel{
 	private MethodInterface interpret;
 
 	public MethodPanel(MethodInterface interpreter) throws InterpretException {
-		super(interpreter.getMethods().length,"modifier","return Type","Method name","args");
+		super(Controller.METHOD,interpreter.getMethods().length,"modifier","return Type","Method name","args");
 		interpret = interpreter;
 		createMethodPanel();
 	}

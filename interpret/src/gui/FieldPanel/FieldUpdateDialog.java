@@ -11,8 +11,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.FieldItem;
+<<<<<<< Updated upstream
 import gui.Frame;
 import gui.panels.UpdateDialog;
+=======
+import gui.SingleInstanceFrame;
+>>>>>>> Stashed changes
 import processing.interpret.InterpretException;
 
 public class FieldUpdateDialog extends UpdateDialog{
@@ -46,17 +50,17 @@ public class FieldUpdateDialog extends UpdateDialog{
 			public void actionPerformed(ActionEvent e) {
 				String message;
 				try {
-					Frame.controller.setField();
+					SingleInstanceFrame.controller.setField();
 					message = "update success.";
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 					dispose();
 				} catch (InterpretException exception) {
 					message = "exception occurred.\n"+
 							exception.getMessage() +"\n" +
 							exception.getException().toString();
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 				}
-				Frame.FRAME.repaint();
+				SingleInstanceFrame.FRAME.repaint();
 			}
 		});
 		return button;
