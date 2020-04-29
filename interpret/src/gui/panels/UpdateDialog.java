@@ -10,14 +10,14 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import gui.Frame;
+import gui.SingleInstanceFrame;
 
 public abstract class UpdateDialog extends JDialog{
 
 	protected static Dimension preferredSize = new Dimension(400,200);
 
 	public UpdateDialog(String title) {
-		super(Frame.FRAME,title);
+		super(SingleInstanceFrame.FRAME,title);
 		setSize(400,300);
 	}
 

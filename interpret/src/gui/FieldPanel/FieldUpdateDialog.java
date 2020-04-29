@@ -11,12 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.FieldItem;
-<<<<<<< Updated upstream
-import gui.Frame;
 import gui.panels.UpdateDialog;
-=======
 import gui.SingleInstanceFrame;
->>>>>>> Stashed changes
 import processing.interpret.InterpretException;
 
 public class FieldUpdateDialog extends UpdateDialog{
