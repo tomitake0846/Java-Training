@@ -3,6 +3,7 @@ package gui.FieldPanel;
 import java.awt.GridLayout;
 import java.lang.reflect.Field;
 
+import controller.Controller;
 import controller.FieldItem;
 import gui.panels.MemberPanel;
 import processing.FieldInterface;
@@ -12,7 +13,7 @@ public class FieldPanel extends MemberPanel{
 	private FieldInterface interpret;
 
 	public FieldPanel(FieldInterface interpreter) throws InterpretException{
-		super(interpreter.getFields().length,"modifier","field name","value");
+		super(Controller.FIELD,interpreter.getFields().length,"modifier","field name","value");
 		interpret = interpreter;
 		createFieldPanel();
 	}

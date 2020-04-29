@@ -84,6 +84,9 @@ public class Controller {
 		String newValue = fi.getTextField().getText();
 
 		interpreter.setField(fieldName, newValue);
+
+		//panel reflesh
+		panelMap.put(Controller.FIELD,new FieldPanel(interpreter));
 	}
 
 }

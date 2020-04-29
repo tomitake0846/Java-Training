@@ -5,39 +5,38 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.ConstructorItem;
-import gui.Frame;
+import gui.SingleInstanceFrame;
+import gui.panels.UpdateDialog;
 import processing.interpret.InterpretException;
 
-public class ConstructorUpdateDialog extends JDialog{
+public class ConstructorUpdateDialog extends UpdateDialog{
 
 	private ConstructorItem ci;
 	public ConstructorUpdateDialog(String title,ConstructorItem ci) {
-		super(Frame.FRAME,title);
+		super(title);
 		this.ci = ci;
-		setSize(800,600);
 	}
 
-
-	public void visible() {
+	protected JPanel getStatusPanel() {
 		JTextField[] fields = ci.getTextFields();
-		setLayout(new GridLayout(1,fields.length));
-		add(new JLabel(ci.getModifier()));
-		add(new JLabel(ci.trimPackageName(ci.getConstructorName())));
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(UpdateDialog.preferredSize);
+		panel.setLayout(new GridLayout(1,fields.length));
+		panel.add(new JLabel(ci.getModifier()));
+		panel.add(new JLabel(ci.trimPackageName(ci.getConstructorName())));
 		for(JTextField field :fields) {
-			add(field);
+			panel.add(field);
 		}
-		add(getUpdateButton());
-		add(getCancelButton());
-		setVisible(true);
+		return panel;
 	}
 
-	private JButton getUpdateButton() {
+	protected JButton getUpdateButton() {
 		JButton button = new JButton("update");
 
 		button.addActionListener(new ActionListener() {
@@ -45,28 +44,17 @@ public class ConstructorUpdateDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				String message;
 				try {
-					Frame.controller.createInstance();
+					SingleInstanceFrame.controller.createInstance();
 					message = "update success.";
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 					dispose();
 				} catch (InterpretException exception) {
 					message = "exception occurred.\n"+
 							exception.getMessage() +"\n" +
 							exception.getException().toString();
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 				}
-				Frame.FRAME.repaint();
-			}
-		});
-		return button;
-	}
-
-	private JButton getCancelButton() {
-		JButton button = new JButton("cancel");
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
+				SingleInstanceFrame.FRAME.repaint();
 			}
 		});
 		return button;

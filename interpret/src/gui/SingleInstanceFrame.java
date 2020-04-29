@@ -17,9 +17,9 @@ import controller.Controller;
 import gui.panels.MemberPanel;
 import processing.interpret.InterpretException;
 
-public class Frame extends JFrame implements ActionListener{
+public class SingleInstanceFrame extends JFrame implements ActionListener{
 
-	public static final Frame FRAME = new Frame();
+	public static final SingleInstanceFrame FRAME = new SingleInstanceFrame();
 	public static Controller controller = new Controller();
 
 	private MemberPanel displayPanel;
@@ -28,16 +28,15 @@ public class Frame extends JFrame implements ActionListener{
 	private JButton FieldButton;
 	private JButton MethodButton;
 
-	public Frame() {
+	public SingleInstanceFrame() {
 		initVisual();
 		initTextBox();
-		setVisible(true);
 	}
 
 	private void initVisual() {
 		setTitle("interpret");
 		setSize(1200,800);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private void initTextBox() {
@@ -64,37 +63,28 @@ public class Frame extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Container contentPane = getContentPane();
-		try {
-			String command = e.getActionCommand();
+		String command = e.getActionCommand();
 
-			//remove old Panel.
-			if(displayPanel != null) {
-				contentPane.remove(displayPanel.getMainPane());
-				displayPanel.setVisible(false);
-			}
-			if(Controller.CONSTRUCTOR.equals(command)) {
-				String className = this.text.getText();
-				Frame.controller = new Controller();
+		if(Controller.CONSTRUCTOR.equals(command)) {
+			String className = this.text.getText();
+			SingleInstanceFrame.controller = new Controller();
+			try {
 				displayPanel = controller.getDisplayPanel(command,className);
+			} catch (InterpretException e1) {
+				//display dialog with error message.
+				JOptionPane.showMessageDialog(this,e1.getMessage());
 			}
-
-			//add new Panel
-			MemberPanel panel = controller.getDisplayPanel(command);
-			contentPane.add(panel.getMainPane());
-			displayPanel = panel;
-			repaint();
-
-		} catch (InterpretException exception) {
-			//display dialog with error message.
-			JOptionPane.showMessageDialog(this,exception.getMessage());
 		}
+		panelDisplay(command);
+		repaint();
 	}
 
 	@Override
 	public void repaint() {
 		if(displayPanel != null) {
 			displayPanel.setVisible(true);
+			String panelType = displayPanel.getPanelType();
+			panelDisplay(panelType);
 		}
 		if(controller.hasInstance()) {
 			this.FieldButton.setVisible(true);
@@ -107,10 +97,31 @@ public class Frame extends JFrame implements ActionListener{
 		setVisible(true);
 	}
 
+	private void panelDisplay(String panelType) {
+		Container contentPane = getContentPane();
+		try {
+			//remove old Panel.
+			if(displayPanel != null) {
+				contentPane.remove(displayPanel.getMainPane());
+				displayPanel.setVisible(false);
+			}
+
+			//add new Panel
+			MemberPanel panel = controller.getDisplayPanel(panelType);
+			contentPane.add(panel.getMainPane());
+			displayPanel = panel;
+
+			displayPanel.setVisible(true);
+
+		} catch (InterpretException exception) {
+			//display dialog with error message.
+			JOptionPane.showMessageDialog(this,exception.getMessage());
+		}
+	}
+
 	private JButton getButton(String name) {
 		JButton button = new JButton(name);
 		button.addActionListener(this);
 		return button;
 	}
-
 }

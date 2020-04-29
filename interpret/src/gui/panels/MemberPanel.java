@@ -17,8 +17,11 @@ public class MemberPanel extends JPanel{
 
 	private JScrollPane scrollPane;
 
-	public MemberPanel(int itemNum,String...strings) {
+	private String panelType;
+
+	public MemberPanel(String panelType,int itemNum,String...strings) {
 		this.titlePanel = initTitlePanel(strings);
+		this.panelType = panelType;
 
 		this.scrollPane = new JScrollPane(this);
 		this.setPreferredSize(new Dimension(1100,(41 * itemNum)));
@@ -26,14 +29,6 @@ public class MemberPanel extends JPanel{
 		this.scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		this.scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-	}
-
-	public JPanel getTitlePanel() {
-		return this.titlePanel;
-	}
-
-	public JScrollPane getMainPane() {
-		return this.scrollPane;
 	}
 
 	protected List<String> getMemberList(Member[] mems) {
@@ -64,6 +59,18 @@ public class MemberPanel extends JPanel{
 			title.add(label);
 		}
 		return title;
+	}
+
+	public JPanel getTitlePanel() {
+		return this.titlePanel;
+	}
+
+	public JScrollPane getMainPane() {
+		return this.scrollPane;
+	}
+
+	public String getPanelType() {
+		return this.panelType;
 	}
 
 }

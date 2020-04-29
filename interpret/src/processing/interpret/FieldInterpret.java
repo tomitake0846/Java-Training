@@ -8,8 +8,8 @@ public class FieldInterpret {
 
 	public FieldInterpret(Object instance) {
 		this.instance = instance;
-		this.fields = instance.getClass().getFields();
-//		this.fields = instance.getClass().getDeclaredFields();
+//		this.fields = instance.getClass().getFields();
+		this.fields = instance.getClass().getDeclaredFields();
 	}
 
 	public void setField(String fieldName,Object value) throws InterpretException {
@@ -23,8 +23,9 @@ public class FieldInterpret {
 //			Field modifier = Field.class.getDeclaredField("modifiers");
 //			modifier.setAccessible(true);
 //			modifier.setInt(field, field.getModifiers() & ~Modifier.PRIVATE & ~Modifier.FINAL);
-
 			field.set(instance, value);
+
+			this.fields = instance.getClass().getDeclaredFields();
 		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
@@ -35,6 +36,7 @@ public class FieldInterpret {
 	public Field[] getFields() {
 		return this.fields;
 	}
+
 	public Object getFieldValue(String fieldName) throws InterpretException {
 		try {
 			Field field = getField(fieldName);
@@ -60,9 +62,9 @@ public class FieldInterpret {
 	private Field getField(String fieldName)  throws InterpretException {
 		try {
 			Field field;
-//			field = this.instance.getClass().getDeclaredField(fieldName);
-			field = this.instance.getClass().getField(fieldName);
-//			field.setAccessible(true);
+			field = this.instance.getClass().getDeclaredField(fieldName);
+//			field = this.instance.getClass().getField(fieldName);
+			field.setAccessible(true);
 			return field;
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException e) {
 			// TODO 自動生成された catch ブロック

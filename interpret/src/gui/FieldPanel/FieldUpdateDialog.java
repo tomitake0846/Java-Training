@@ -5,39 +5,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.FieldItem;
-import gui.Frame;
+import gui.panels.UpdateDialog;
+import gui.SingleInstanceFrame;
 import processing.interpret.InterpretException;
 
-public class FieldUpdateDialog extends JDialog{
+public class FieldUpdateDialog extends UpdateDialog{
 
 	private FieldItem fi;
 	public FieldUpdateDialog(String title,FieldItem fi) {
+		super(title);
 		this.fi = fi;
-		setSize(800,600);
 	}
 
-	public void visible() {
+	protected JPanel getStatusPanel() {
 		JTextField field = fi.getTextField();
-
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(UpdateDialog.preferredSize);
 		//really??
-		setLayout(new GridLayout(1,1));
+		panel.setLayout(new GridLayout(1,1));
 
-		add(new JLabel(fi.getModifier()));
-		add(new JLabel(fi.trimPackageName(fi.getFieldName())));
-		add(field);
+		panel.add(new JLabel(fi.getModifier()));
+		panel.add(new JLabel(fi.trimPackageName(fi.getFieldName())));
+		panel.add(field);
 
-		add(getUpdateButton());
-		add(getCancelButton());
-		setVisible(true);
+		return panel;
 	}
 
-	private JButton getUpdateButton() {
+
+	protected JButton getUpdateButton() {
 		JButton button = new JButton("update");
 
 		button.addActionListener(new ActionListener() {
@@ -45,28 +46,17 @@ public class FieldUpdateDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				String message;
 				try {
-					Frame.controller.setField();
+					SingleInstanceFrame.controller.setField();
 					message = "update success.";
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 					dispose();
 				} catch (InterpretException exception) {
 					message = "exception occurred.\n"+
 							exception.getMessage() +"\n" +
 							exception.getException().toString();
-					JOptionPane.showMessageDialog(Frame.FRAME,message);
+					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
 				}
-				Frame.FRAME.repaint();
-			}
-		});
-		return button;
-	}
-
-	private JButton getCancelButton() {
-		JButton button = new JButton("cancel");
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				dispose();
+				SingleInstanceFrame.FRAME.repaint();
 			}
 		});
 		return button;
