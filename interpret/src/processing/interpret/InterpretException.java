@@ -1,17 +1,17 @@
 package processing.interpret;
 
 public class InterpretException extends Exception{
-	private Exception e;
+	private Throwable e;
 	private String message;
-	public InterpretException(String message,Exception e) {
+	public InterpretException(String message,Throwable throwable) {
 		this.message = message;
-		this.e = e;
+		this.e = throwable;
 	}
 	public String getMessage() {
 		return this.message;
 	}
 
-	public Exception getException() {
+	public Throwable getException() {
 		return this.e;
 	}
 }

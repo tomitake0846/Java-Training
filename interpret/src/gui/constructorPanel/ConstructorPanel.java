@@ -11,8 +11,8 @@ import processing.interpret.InterpretException;
 
 public class ConstructorPanel extends MemberPanel{
 	private Constructor<?>[] constructors;
-	public ConstructorPanel(ConstructorInterface interpreter) throws InterpretException {
-		super(Controller.CONSTRUCTOR,interpreter.getConstructors().length,"modifier","Constructor name","args");
+	public ConstructorPanel(ConstructorInterface interpreter,Controller controller) throws InterpretException {
+		super(Controller.CONSTRUCTOR,controller,interpreter.getConstructors().length,"modifier","Constructor name","args");
 		constructors = interpreter.getConstructors();
 		createConstructorPanel();
 	}
@@ -21,9 +21,10 @@ public class ConstructorPanel extends MemberPanel{
 		setLayout(new GridLayout(this.constructors.length+1,3));
 
 		add(getTitlePanel());
+
 		for(Constructor<?> constructor : this.constructors) {
 			ConstructorItem ci = new ConstructorItem(constructor);
-			add(new ConstructorItemPanel(ci));
+			add(new ConstructorItemPanel(ci,getController()));
 		}
 	}
 

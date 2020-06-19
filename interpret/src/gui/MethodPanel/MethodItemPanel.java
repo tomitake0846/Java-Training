@@ -5,14 +5,17 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
+import controller.Controller;
 import controller.MethodItem;
 import gui.panels.ItemPanel;
 
 public class MethodItemPanel extends ItemPanel{
 	private MethodItem mi;
+	private Controller controller;
 
-	public MethodItemPanel(MethodItem mi) {
+	public MethodItemPanel(MethodItem mi,Controller controller) {
 		this.mi = mi;
+		this.controller = controller;
 
 		setLayout(new GridLayout(1,mi.getArgs().length));
 		setName(mi.getMethodName());
@@ -27,7 +30,7 @@ public class MethodItemPanel extends ItemPanel{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		this.mi.selected();
-		MethodExecuteDialog dialog = new MethodExecuteDialog("test",mi);
+		MethodExecuteDialog dialog = new MethodExecuteDialog("test",mi,controller);
 		dialog.visible();
 	}
 }

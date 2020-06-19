@@ -10,16 +10,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import controller.Controller;
 import controller.FieldItem;
 import gui.panels.UpdateDialog;
-import gui.SingleInstanceFrame;
 import processing.interpret.InterpretException;
 
 public class FieldUpdateDialog extends UpdateDialog{
 
 	private FieldItem fi;
-	public FieldUpdateDialog(String title,FieldItem fi) {
-		super(title);
+	public FieldUpdateDialog(String title,FieldItem fi,Controller controller) {
+		super(title,controller);
 		this.fi = fi;
 	}
 
@@ -40,23 +40,24 @@ public class FieldUpdateDialog extends UpdateDialog{
 
 	protected JButton getUpdateButton() {
 		JButton button = new JButton("update");
+		Controller c = getController();
 
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String message;
 				try {
-					SingleInstanceFrame.controller.setField();
+					c.setField();
 					message = "update success.";
-					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
+					JOptionPane.showMessageDialog(null,message);
 					dispose();
 				} catch (InterpretException exception) {
 					message = "exception occurred.\n"+
 							exception.getMessage() +"\n" +
 							exception.getException().toString();
-					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
+					JOptionPane.showMessageDialog(null,message);
 				}
-				SingleInstanceFrame.FRAME.repaint();
+				c.getManagedFrame().repaint();
 			}
 		});
 		return button;

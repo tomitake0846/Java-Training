@@ -11,17 +11,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import controller.Controller;
+
 public class MemberPanel extends JPanel{
 
 	private JPanel titlePanel;
-
 	private JScrollPane scrollPane;
-
 	private String panelType;
+	private Controller controller;
 
-	public MemberPanel(String panelType,int itemNum,String...strings) {
+	public MemberPanel(String panelType,Controller controller,int itemNum,String...strings) {
 		this.titlePanel = initTitlePanel(strings);
 		this.panelType = panelType;
+		this.controller = controller;
 
 		this.scrollPane = new JScrollPane(this);
 		this.setPreferredSize(new Dimension(1100,(41 * itemNum)));
@@ -71,6 +73,10 @@ public class MemberPanel extends JPanel{
 
 	public String getPanelType() {
 		return this.panelType;
+	}
+
+	public Controller getController() {
+		return this.controller;
 	}
 
 }

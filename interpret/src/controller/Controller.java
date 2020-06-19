@@ -3,6 +3,7 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import gui.SingleInstanceFrame;
 import gui.FieldPanel.FieldPanel;
 import gui.MethodPanel.MethodPanel;
 import gui.constructorPanel.ConstructorPanel;
@@ -18,9 +19,11 @@ public class Controller {
 
 	private InterpreterFacade interpreter;
 	private Map<String,MemberPanel> panelMap;
+	private SingleInstanceFrame sif;
 
-	public Controller() {
+	public Controller(SingleInstanceFrame sif) {
 		this.panelMap = new HashMap<String,MemberPanel>();
+		this.sif = sif;
 	}
 
 	// create constructorPanel , panel that display constructor list , and return it.
@@ -28,7 +31,7 @@ public class Controller {
 		if(Controller.CONSTRUCTOR.equals(command)) {
 
 			this.interpreter = new InterpreterFacade(className);
-			ConstructorPanel cp = new ConstructorPanel(interpreter);
+			ConstructorPanel cp = new ConstructorPanel(interpreter,this);
 			panelMap.put(CONSTRUCTOR,cp);
 
 			return cp;
@@ -56,9 +59,9 @@ public class Controller {
 		// how input Constructor<?> that in Constrcutor ItemPanel ?
 		this.interpreter.Construct(ci.getConstructor(),ci.getArgs());
 
-		panelMap.put(Controller.FIELD,new FieldPanel(interpreter));
+		panelMap.put(Controller.FIELD,new FieldPanel(interpreter,this));
 
-		panelMap.put(Controller.METHOD,new MethodPanel(interpreter));
+		panelMap.put(Controller.METHOD,new MethodPanel(interpreter,this));
 
 	}
 
@@ -86,7 +89,11 @@ public class Controller {
 		interpreter.setField(fieldName, newValue);
 
 		//panel reflesh
-		panelMap.put(Controller.FIELD,new FieldPanel(interpreter));
+		panelMap.put(Controller.FIELD,new FieldPanel(interpreter,this));
+	}
+
+	public SingleInstanceFrame getManagedFrame() {
+		return this.sif;
 	}
 
 }
