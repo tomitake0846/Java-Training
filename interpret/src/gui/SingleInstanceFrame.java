@@ -101,12 +101,18 @@ public class SingleInstanceFrame extends JFrame implements ActionListener{
 		setVisible(true);
 	}
 
+	public void setText(String text) {
+		this.text.setText(text);
+	}
+	public String toString() {
+		return "To do : test";
+	}
+
 	private void panelDisplay(String panelType) {
 		Container contentPane = getContentPane();
 		try {
 			//remove old Panel.
 			if(displayPanel != null) {
-				System.out.println("remove old panel. :" + displayPanel.getMainPane().toString());
 				contentPane.remove(displayPanel.getMainPane());
 				displayPanel.setVisible(false);
 			}

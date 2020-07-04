@@ -84,22 +84,26 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 		return this.ci.getConstructors();
 	}
 
-	private Object convert(Class<?> type,String value) {
+	private Object convert(Class<?> type,String value) throws InterpretException {
 		String typeName = type.getName();
-		switch(typeName) {
-		case "char" : return value.charAt(0);
-		case "short": return Short.parseShort(value);
-		case "int" : return Integer.parseInt(value);
-		case "long" : return Long.parseLong(value);
-		case "byte" : return Byte.parseByte(value);
-		case "float" : return Float.parseFloat(value);
-		case "double" : return Double.parseDouble(value);
-		case "boolean" : return Boolean.parseBoolean(value);
-		case "java.lang.String" : return value;
-		default : return null;
+		try {
+			switch(typeName) {
+			case "char" : return value.charAt(0);
+			case "short": return Short.parseShort(value);
+			case "int" : return Integer.parseInt(value);
+			case "long" : return Long.parseLong(value);
+			case "byte" : return Byte.parseByte(value);
+			case "float" : return Float.parseFloat(value);
+			case "double" : return Double.parseDouble(value);
+			case "boolean" : return Boolean.parseBoolean(value);
+			case "java.lang.String" : return value;
+			default : return null;
+			}
+		} catch (RuntimeException e ) {
+			throw new InterpretException ("Type Convertion Error",e);
 		}
 	}
-	private Object[] convert(Class<?>[] types,String[] args) {
+	private Object[] convert(Class<?>[] types,String[] args) throws InterpretException{
 		Object[] result = new Object[types.length];
 		for(int i=0;i<result.length;i++) {
 			result[i] = convert(types[i],args[i]);
