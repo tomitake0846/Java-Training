@@ -7,13 +7,14 @@ public class DigitalClock{
 	public static final MyFrame frame;
 	public static final ClockCanvas canvas;
 	public static final MenuBar menubar;
-
+	public static final ExtendedPreference prefs;
 	static {
 
 		PropertyInfo property = PropertyInfo.instance;
 		frame = new MyFrame(property);
 		canvas = new ClockCanvas(property);
 		menubar = new MyMenubar();
+		prefs = new ExtendedPreference(property,frame);
 		frame.add(canvas);
 		frame.setMenuBar(menubar);
 		frame.addWindowListener(ButtonFactory.getCloseButton(DigitalClock.frame));

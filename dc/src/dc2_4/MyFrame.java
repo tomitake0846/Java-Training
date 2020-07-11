@@ -10,6 +10,7 @@ public class MyFrame extends JFrame implements Close{
 	}
 
 	public void close() {
+		DigitalClock.prefs.positionUpdate();
 		System.exit(0);
 	}
 }

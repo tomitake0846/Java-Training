@@ -28,7 +28,6 @@ public class ArrayItemPanel extends ItemPanel{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("clicked");
 		arrayItem.run();
 	}
 

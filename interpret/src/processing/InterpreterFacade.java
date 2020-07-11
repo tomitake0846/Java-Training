@@ -97,7 +97,9 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 			case "double" : return Double.parseDouble(value);
 			case "boolean" : return Boolean.parseBoolean(value);
 			case "java.lang.String" : return value;
-			default : return null;
+			default : {
+					return null;
+				}
 			}
 		} catch (RuntimeException e ) {
 			throw new InterpretException ("Type Convertion Error",e);

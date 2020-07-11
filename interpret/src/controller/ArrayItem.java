@@ -32,6 +32,7 @@ public class ArrayItem {
 		}
 		ActionEvent e = new ActionEvent(this,index,Controller.CONSTRUCTOR);
 		frame.setText(this.objectType);
-		this.frame.actionPerformed(e);
+		frame.setVisible(true);
+//		this.frame.actionPerformed(e);
 	}
 }
