@@ -1,6 +1,5 @@
 package dc2_4.dialog;
 
-import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -16,7 +15,7 @@ public abstract class abstractDialog extends JDialog implements Close,ComponentL
 		setVisible(true);
 		addWindowListener(ButtonFactory.getCloseButton(this));
 		addComponentListener(this);
-		setBackground(Color.white);
+//		setBackground(Color.white);
 	}
 	@Override
 	public void close() {

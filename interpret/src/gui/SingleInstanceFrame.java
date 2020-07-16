@@ -19,8 +19,8 @@ import processing.interpret.InterpretException;
 
 public class SingleInstanceFrame extends JFrame implements ActionListener{
 
-	public static final SingleInstanceFrame FRAME = new SingleInstanceFrame();
-	public static Controller controller = new Controller();
+//	public static final SingleInstanceFrame FRAME = new SingleInstanceFrame();
+	private Controller controller;
 
 	private MemberPanel displayPanel;
 	private JTextField text;
@@ -36,6 +36,7 @@ public class SingleInstanceFrame extends JFrame implements ActionListener{
 	private void initVisual() {
 		setTitle("interpret");
 		setSize(1200,800);
+		controller = new Controller(this);
 //		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -67,7 +68,10 @@ public class SingleInstanceFrame extends JFrame implements ActionListener{
 
 		if(Controller.CONSTRUCTOR.equals(command)) {
 			String className = this.text.getText();
-			SingleInstanceFrame.controller = new Controller();
+
+			removePanel();
+			this.controller = new Controller(this);
+
 			try {
 				displayPanel = controller.getDisplayPanel(command,className);
 			} catch (InterpretException e1) {
@@ -97,6 +101,13 @@ public class SingleInstanceFrame extends JFrame implements ActionListener{
 		setVisible(true);
 	}
 
+	public void setText(String text) {
+		this.text.setText(text);
+	}
+	public String toString() {
+		return "To do : test";
+	}
+
 	private void panelDisplay(String panelType) {
 		Container contentPane = getContentPane();
 		try {
@@ -123,5 +134,12 @@ public class SingleInstanceFrame extends JFrame implements ActionListener{
 		JButton button = new JButton(name);
 		button.addActionListener(this);
 		return button;
+	}
+
+	private void removePanel() {
+		Container contentPane = getContentPane();
+		if(displayPanel !=null) {
+			contentPane.remove(displayPanel.getMainPane());
+		}
 	}
 }

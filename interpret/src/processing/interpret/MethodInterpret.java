@@ -28,10 +28,12 @@ public class MethodInterpret {
 			method = this.instance.getClass().getMethod(methodName,argsType);
 			method.invoke(this.instance, args);
 		} catch (NoSuchMethodException | SecurityException |
-				IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				IllegalAccessException | IllegalArgumentException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 			throw new InterpretException("Illegal methodName ["+methodName+"] or arguments [" + Arrays.toString(args) +"]",e);
+		}  catch (InvocationTargetException e) {
+			throw new InterpretException("Illegal methodName ["+methodName+"] or arguments [" + Arrays.toString(args) +"]",e.getCause());
 		}
 	}
 
@@ -48,10 +50,12 @@ public class MethodInterpret {
 			return method.invoke(this.instance,args);
 
 		} catch (NoSuchMethodException | SecurityException |
-				IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				IllegalAccessException | IllegalArgumentException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 			throw new InterpretException("Illegal methodName ["+methodName+"] or arguments [" + Arrays.toString(args) +"]",e);
+		} catch (InvocationTargetException e) {
+			throw new InterpretException("Illegal methodName ["+methodName+"] or arguments [" + Arrays.toString(args) +"]",e.getCause());
 		}
 	}
 

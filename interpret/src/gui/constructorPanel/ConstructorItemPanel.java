@@ -6,13 +6,16 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 
 import controller.ConstructorItem;
+import controller.Controller;
 import gui.panels.ItemPanel;
 
 public class ConstructorItemPanel extends ItemPanel{
 
 	private ConstructorItem ci;
-	public ConstructorItemPanel(ConstructorItem ci) {
+	private Controller controller;
+	public ConstructorItemPanel(ConstructorItem ci,Controller controller) {
 		this.ci = ci;
+		this.controller = controller;
 		setLayout(new GridLayout(1,ci.getArgs().length));
 		setName(ci.getConstructorName());
 
@@ -25,7 +28,7 @@ public class ConstructorItemPanel extends ItemPanel{
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		this.ci.selected();
-		ConstructorUpdateDialog dialog = new ConstructorUpdateDialog("test",ci);
+		ConstructorUpdateDialog dialog = new ConstructorUpdateDialog("test",ci,controller);
 		dialog.visible();
 	}
 }

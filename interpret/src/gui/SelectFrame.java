@@ -28,6 +28,7 @@ public class SelectFrame extends JFrame{
 		}));
 
 		this.add(panel);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 	private JButton getButton(String name,ActionListener e) {

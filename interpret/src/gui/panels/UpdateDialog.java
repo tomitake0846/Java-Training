@@ -10,15 +10,16 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import gui.SingleInstanceFrame;
+import controller.Controller;
 
 public abstract class UpdateDialog extends JDialog{
 
 	protected static Dimension preferredSize = new Dimension(400,200);
+	protected Controller controller;
 
-	public UpdateDialog(String title) {
-		super(SingleInstanceFrame.FRAME,title);
+	public UpdateDialog(String title,Controller controller) {
 		setSize(400,300);
+		this.controller = controller;
 	}
 
 	public void visible() {
@@ -49,5 +50,9 @@ public abstract class UpdateDialog extends JDialog{
 			}
 		});
 		return button;
+	}
+
+	protected Controller getController() {
+		return this.controller;
 	}
 }

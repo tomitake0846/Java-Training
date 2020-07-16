@@ -8,6 +8,11 @@ public final class PropertyInfo{
 
 	public static PropertyInfo instance = new PropertyInfo();
 
+	public static final String FONT_FAMILY = "Font Family";
+	public static final String FONT_SIZE = "Font Size";
+	public static final String CHAR_COLOR = "Character Color";
+	public static final String BG_COLOR = "BackGround Color";
+
 	//default value
 	private String fontFamily = "Serif";
 	private int fontName = Font.ITALIC;
@@ -72,5 +77,26 @@ public final class PropertyInfo{
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
+	}
+
+	public String getCurrentProperty(String propertyName) {
+		switch(propertyName) {
+		case FONT_FAMILY : return getFontFamily();
+		case FONT_SIZE : return ""+getFontSize();
+		case CHAR_COLOR : return getCharColor();
+		case BG_COLOR : return getBGColor();
+		default : throw new IllegalArgumentException();
+		}
+	}
+
+	public void reflesh() {
+		fontFamily = "Serif";
+		fontName = Font.ITALIC;
+		fontSize = 40;
+		CharColor = "white";
+		BGColor = "black";
+		clockTitle = "digital clock";
+		clockWidth = 600;
+		clockHeight = 300;
 	}
 }

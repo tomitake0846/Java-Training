@@ -11,15 +11,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.ConstructorItem;
-import gui.SingleInstanceFrame;
+import controller.Controller;
 import gui.panels.UpdateDialog;
 import processing.interpret.InterpretException;
 
 public class ConstructorUpdateDialog extends UpdateDialog{
 
 	private ConstructorItem ci;
-	public ConstructorUpdateDialog(String title,ConstructorItem ci) {
-		super(title);
+	public ConstructorUpdateDialog(String title,ConstructorItem ci,Controller controller) {
+		super(title,controller);
 		this.ci = ci;
 	}
 
@@ -38,23 +38,24 @@ public class ConstructorUpdateDialog extends UpdateDialog{
 
 	protected JButton getUpdateButton() {
 		JButton button = new JButton("update");
+		Controller c = getController();
 
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String message;
 				try {
-					SingleInstanceFrame.controller.createInstance();
+					c.createInstance();
 					message = "update success.";
-					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
+					JOptionPane.showMessageDialog(null,message);
 					dispose();
 				} catch (InterpretException exception) {
 					message = "exception occurred.\n"+
 							exception.getMessage() +"\n" +
 							exception.getException().toString();
-					JOptionPane.showMessageDialog(SingleInstanceFrame.FRAME,message);
+					JOptionPane.showMessageDialog(null,message);
 				}
-				SingleInstanceFrame.FRAME.repaint();
+				c.getManagedFrame().repaint();
 			}
 		});
 		return button;
