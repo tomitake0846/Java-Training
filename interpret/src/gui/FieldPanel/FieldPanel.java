@@ -30,7 +30,13 @@ public class FieldPanel extends MemberPanel{
 
 		for(Field field : fields) {
 			String fieldName = field.getName();
-			FieldItem fi = new FieldItem(field,interpret.getFieldValue(fieldName).toString());
+			Object val = interpret.getFieldValue(fieldName);
+			FieldItem fi;
+			if(val == null) {
+				fi = new FieldItem(field,"null");
+			} else {
+				fi = new FieldItem(field,val.toString());
+			}
 			add(new FieldItemPanel(fi,getController()));
 		}
 	}

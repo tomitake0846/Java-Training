@@ -23,7 +23,6 @@ public class FieldItemPanel extends ItemPanel{
 
 		add(new JLabel(fi.getModifier()));
 		add(new JLabel(fi.trimPackageName(fi.getFieldName())));
-		System.out.println(fi.getFieldValueAsString());
 		add(new JLabel(fi.getFieldValueAsString()));
 		addMouseListener(this);
 	}
