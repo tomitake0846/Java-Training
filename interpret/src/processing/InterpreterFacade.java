@@ -23,9 +23,12 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 	public boolean hasInstance() {
 		return this.instance != null;
 	}
+	public Object getInstance() {
+		return this.instance;
+	}
 
 	@Override
-	public void Construct(Constructor<?> target,String...args) throws InterpretException {
+	public void Construct(Constructor<?> target,Object...args) throws InterpretException {
 		try {
 
 			Object[] objects = convert(target.getParameterTypes(),args);
@@ -68,12 +71,12 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 		return this.mi.getMethods();
 	}
 	@Override
-	public void consumer(String methodName,Class<?>[] argsType,String[] args) throws InterpretException {
+	public void consumer(String methodName,Class<?>[] argsType,Object[] args) throws InterpretException {
 		Object[] v = convert(argsType,args);
 		this.mi.consumer(methodName,argsType,v);
 	}
 	@Override
-	public Object function(String methodName,Class<?>[] argsType,String[] args) throws InterpretException {
+	public Object function(String methodName,Class<?>[] argsType,Object[] args) throws InterpretException {
 		Object[] v = convert(argsType,args);
 		return this.mi.function(methodName,argsType, v);
 	}
@@ -105,10 +108,16 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 			throw new InterpretException ("Type Convertion Error",e);
 		}
 	}
-	private Object[] convert(Class<?>[] types,String[] args) throws InterpretException{
+	private Object[] convert(Class<?>[] types,Object[] args) throws InterpretException{
 		Object[] result = new Object[types.length];
 		for(int i=0;i<result.length;i++) {
-			result[i] = convert(types[i],args[i]);
+			if(types[i].isPrimitive()) {
+				result[i] = convert(types[i],(String)args[i]);
+			} else if (types[i].getName().equals("java.lang.String")) {
+				result[i] = convert(types[i],(String)args[i]);
+			} else {
+				result[i] = args[i];
+			}
 		}
 		return result;
 	}
@@ -130,4 +139,5 @@ public class InterpreterFacade implements FieldInterface,MethodInterface,Constru
 		}
 		return params;
 	}
+
 }

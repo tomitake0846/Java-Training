@@ -3,7 +3,7 @@ package gui.constructorPanel;
 import java.awt.GridLayout;
 import java.lang.reflect.Constructor;
 
-import controller.ConstructorItem;
+import controller.ConstructorInformation;
 import controller.Controller;
 import gui.panels.MemberPanel;
 import processing.ConstructorInterface;
@@ -23,8 +23,8 @@ public class ConstructorPanel extends MemberPanel{
 		add(getTitlePanel());
 
 		for(Constructor<?> constructor : this.constructors) {
-			ConstructorItem ci = new ConstructorItem(constructor);
-			add(new ConstructorItemPanel(ci,getController()));
+			ConstructorInformation ci = new ConstructorInformation(constructor);
+			add(new ConstructorInformationPanel(ci,getController()));
 		}
 	}
 

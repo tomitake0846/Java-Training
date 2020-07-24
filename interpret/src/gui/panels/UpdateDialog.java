@@ -51,6 +51,16 @@ public abstract class UpdateDialog extends JDialog{
 		});
 		return button;
 	}
+	protected JButton getCreateInstanceButton(String className) {
+		JButton button = new JButton("create");
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		return button;
+	}
 
 	protected Controller getController() {
 		return this.controller;

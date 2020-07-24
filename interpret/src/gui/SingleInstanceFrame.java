@@ -20,7 +20,7 @@ import processing.interpret.InterpretException;
 public class SingleInstanceFrame extends JFrame implements ActionListener{
 
 //	public static final SingleInstanceFrame FRAME = new SingleInstanceFrame();
-	private Controller controller;
+	protected Controller controller;
 
 	private MemberPanel displayPanel;
 	private JTextField text;
@@ -106,6 +106,10 @@ public class SingleInstanceFrame extends JFrame implements ActionListener{
 	}
 	public String toString() {
 		return "To do : test";
+	}
+
+	public Object getInstance() {
+		return this.controller.getInstance();
 	}
 
 	private void panelDisplay(String panelType) {
