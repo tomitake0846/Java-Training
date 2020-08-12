@@ -1,14 +1,15 @@
 package ch21.ex04;
 
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-public class ShortStrings implements Iterator<String>{
+public class ShortStringsAnother implements ListIterator<String>{
 	private Iterator<String> strings;
 	private String nextShort;
 	private final int maxLen;
 
-	public ShortStrings(Iterator<String> strings,int maxLen) {
+	public ShortStringsAnother(Iterator<String> strings,int maxLen) {
 		this.strings = strings;
 		this.maxLen = maxLen;
 		this.nextShort = null;
@@ -41,7 +42,40 @@ public class ShortStrings implements Iterator<String>{
 	}
 
 	@Override
+	public boolean hasPrevious() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public String previous() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int nextIndex() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public int previousIndex() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public void set(String e) {
+		throw new UnsupportedOperationException();
+
+	}
+
+	@Override
+	public void add(String e) {
+		throw new UnsupportedOperationException();
+
+	}
+
 }
