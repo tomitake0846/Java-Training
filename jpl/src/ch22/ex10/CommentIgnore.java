@@ -1,4 +1,4 @@
-package ch22.ex09;
+package ch22.ex10;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,34 +7,26 @@ import java.util.Scanner;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
-public class CSVTable {
-
-	static final int CELLS = 4;
-
-	public static List<String[]> readCSVTable(Readable source,String exp) throws IOException{
+public class CommentIgnore {
+	public static List<String> readWithoutComment(Readable source) throws IOException{
 		Scanner in = new Scanner(source);
-		List<String[]> val = new ArrayList<String[]>();
+		List<String> val = new ArrayList<String>();
+		String exp = "([^#]*)(#.*)*";
 
 		Pattern p = Pattern.compile(exp,Pattern.MULTILINE);
 
 		while(in.hasNextLine()) {
 			String line = in.findInLine(p);
 			if(line != null) {
-				String[] cells = new String[CELLS];
 				MatchResult m = in.match();
-				for(int i = 0;i < CELLS; i++) {
-					cells[i] = m.group(i+1);
-				}
-				val.add(cells);
+				val.add(m.group(1));
 
-				if(in.hasNextLine()) {
-					in.nextLine();
-				} else {
-					break;
-				}
+			}
+
+			if(in.hasNextLine()) {
+				in.nextLine();
 			} else {
-				in.close();
-				throw new IOException("input format error");
+				break;
 			}
 		}
 
@@ -45,4 +37,5 @@ public class CSVTable {
 		}
 		return val;
 	}
+
 }

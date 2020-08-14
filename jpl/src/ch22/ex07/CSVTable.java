@@ -32,11 +32,13 @@ public class CSVTable {
 					break;
 				}
 			} else {
+				in.close();
 				throw new IOException("input format error");
 			}
 		}
 
 		IOException e = in.ioException();
+		in.close();
 		if(e != null) {
 			throw e;
 		}
