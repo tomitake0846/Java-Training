@@ -1,61 +1,47 @@
 package ch21.ex04;
 
-import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ShortStrings implements ListIterator{
+public class ShortStrings implements Iterator<String>{
+	private Iterator<String> strings;
+	private String nextShort;
+	private final int maxLen;
+
+	public ShortStrings(Iterator<String> strings,int maxLen) {
+		this.strings = strings;
+		this.maxLen = maxLen;
+		this.nextShort = null;
+	}
 
 	@Override
 	public boolean hasNext() {
-		// TODO 自動生成されたメソッド・スタブ
+		if(nextShort != null) {
+			return true;
+		}
+
+		while(strings.hasNext()) {
+			nextShort = strings.next();
+			if(nextShort.length() <= maxLen) {
+				return true;
+			}
+		}
+		nextShort = null;
 		return false;
 	}
 
 	@Override
-	public Object next() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	@Override
-	public boolean hasPrevious() {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
-	}
-
-	@Override
-	public Object previous() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	@Override
-	public int nextIndex() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
-	}
-
-	@Override
-	public int previousIndex() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
+	public String next() {
+		if(nextShort == null && !hasNext()) {
+			throw new NoSuchElementException();
+		}
+		String n = nextShort;
+		nextShort = null;
+		return n;
 	}
 
 	@Override
 	public void remove() {
-		// TODO 自動生成されたメソッド・スタブ
-
+		throw new UnsupportedOperationException();
 	}
-
-	@Override
-	public void set(Object e) {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
-	@Override
-	public void add(Object e) {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
 }

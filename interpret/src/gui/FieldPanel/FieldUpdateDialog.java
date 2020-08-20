@@ -8,23 +8,23 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import controller.Controller;
-import controller.FieldItem;
+import controller.FieldInformation;
+import controller.argument.ArgumentItem;
 import gui.panels.UpdateDialog;
 import processing.interpret.InterpretException;
 
 public class FieldUpdateDialog extends UpdateDialog{
 
-	private FieldItem fi;
-	public FieldUpdateDialog(String title,FieldItem fi,Controller controller) {
+	private FieldInformation fi;
+	public FieldUpdateDialog(String title,FieldInformation fi,Controller controller) {
 		super(title,controller);
 		this.fi = fi;
 	}
 
 	protected JPanel getStatusPanel() {
-		JTextField field = fi.getTextField();
+		ArgumentItem item = fi.getArgumentItems()[0];
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(UpdateDialog.preferredSize);
 		//really??
@@ -32,7 +32,7 @@ public class FieldUpdateDialog extends UpdateDialog{
 
 		panel.add(new JLabel(fi.getModifier()));
 		panel.add(new JLabel(fi.trimPackageName(fi.getFieldName())));
-		panel.add(field);
+		panel.add(item.getComponent());
 
 		return panel;
 	}

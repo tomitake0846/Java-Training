@@ -5,15 +5,15 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
-import controller.ConstructorItem;
+import controller.ConstructorInformation;
 import controller.Controller;
 import gui.panels.ItemPanel;
 
-public class ConstructorItemPanel extends ItemPanel{
+public class ConstructorInformationPanel extends ItemPanel{
 
-	private ConstructorItem ci;
+	private ConstructorInformation ci;
 	private Controller controller;
-	public ConstructorItemPanel(ConstructorItem ci,Controller controller) {
+	public ConstructorInformationPanel(ConstructorInformation ci,Controller controller) {
 		this.ci = ci;
 		this.controller = controller;
 		setLayout(new GridLayout(1,ci.getArgs().length));

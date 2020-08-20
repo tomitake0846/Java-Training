@@ -1,7 +1,5 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-
 import gui.SingleInstanceFrame;
 
 public class ArrayItem {
@@ -30,9 +28,7 @@ public class ArrayItem {
 		if(this.frame == null) {
 			this.frame = new SingleInstanceFrame();
 		}
-		ActionEvent e = new ActionEvent(this,index,Controller.CONSTRUCTOR);
 		frame.setText(this.objectType);
 		frame.setVisible(true);
-//		this.frame.actionPerformed(e);
 	}
 }

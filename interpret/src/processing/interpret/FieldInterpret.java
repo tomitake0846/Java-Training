@@ -4,12 +4,10 @@ import java.lang.reflect.Field;
 
 public class FieldInterpret {
 	private Object instance;
-	private Field[] fields;
 
 	public FieldInterpret(Object instance) {
 		this.instance = instance;
 //		this.fields = instance.getClass().getFields();
-		this.fields = instance.getClass().getDeclaredFields();
 	}
 
 	public void setField(String fieldName,Object value) throws InterpretException {
@@ -25,7 +23,6 @@ public class FieldInterpret {
 //			modifier.setInt(field, field.getModifiers() & ~Modifier.PRIVATE & ~Modifier.FINAL);
 			field.set(instance, value);
 
-			this.fields = instance.getClass().getDeclaredFields();
 		} catch (SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
@@ -34,7 +31,7 @@ public class FieldInterpret {
 	}
 
 	public Field[] getFields() {
-		return this.fields;
+		return this.instance.getClass().getDeclaredFields();
 	}
 
 	public Object getFieldValue(String fieldName) throws InterpretException {

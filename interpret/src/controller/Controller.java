@@ -52,9 +52,16 @@ public class Controller {
 		return interpreter.hasInstance();
 	}
 
+	public Object getInstance() {
+		if(interpreter != null) {
+			return interpreter.getInstance();
+		}
+		return null;
+	}
+
 	public void createInstance() throws InterpretException {
 
-		ConstructorItem ci = ConstructorItem.getSelectedItem();
+		ConstructorInformation ci = ConstructorInformation.getSelectedItem();
 
 		// how input Constructor<?> that in Constrcutor ItemPanel ?
 		this.interpreter.Construct(ci.getConstructor(),ci.getArgs());
@@ -66,9 +73,9 @@ public class Controller {
 	}
 
 	public Object executeMethod() throws InterpretException {
-		MethodItem mi = MethodItem.getSelectedItem();
+		MethodInformation mi = MethodInformation.getSelectedItem();
 		String methodName = mi.getMethodName();
-		String[] args = mi.getArgs();
+		Object[] args = mi.getArgs();
 		Class<?>[] argsType = mi.getMethod().getParameterTypes();
 
 		//generics 挙動不審
@@ -82,9 +89,9 @@ public class Controller {
 	}
 
 	public void setField() throws InterpretException {
-		FieldItem fi = FieldItem.getSelectedItem();
+		FieldInformation fi = FieldInformation.getSelectedItem();
 		String fieldName = fi.getFieldName();
-		String newValue = fi.getTextField().getText();
+		Object newValue = fi.getArgumentItems()[0].getValue();
 
 		interpreter.setField(fieldName, newValue);
 

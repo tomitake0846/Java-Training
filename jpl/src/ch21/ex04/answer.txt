@@ -1,0 +1,26 @@
+Q. そのクラス（ここではShortStringsAnother）はShortStringsを拡張するべきですか
+
+（前提: 「拡張するべきですか」は、「継承するべきですか」と読みました）
+A. 拡張するべきではない（継承することによる利益が薄く、継承することによって不利益が存在する）
+
+1. 拡張してもしなくても、契約は守られる。　（利益が薄い）
+ListIteratorはIteratorインターフェースを継承している。
+つまり、Iteratorインターフェースの契約は、ListIteratorインターフェースでも確実に守られる。
+
+このため、Iteratorインタフェースを実装したShortStringsクラスを拡張しなくても、
+ListIteratorインターフェースを実装すれば、Iteratorの契約は守られる。
+≒実装してもしなくてもよい
+
+2. 堅牢性が下がる　（不利益がある）
+ListIteratorで宣言されている抽象メソッドを実装すると、ShortStringsで宣言されている以下のフィールドも確実に必要となる。
+```
+	private Iterator<String> strings;
+	private String nextShort;
+	private final int maxLen;
+```
+上記フィールドを利用してListIteratorを実装すると、以下のような策をとらなければならなくなる。
+
+* ShortStringsにも、同じ役割のフィールドを宣言する -> フィールド二重定義になってしまい、バグの温床となる
+* 可視性をprivate からprotectedに変更する -> 堅牢性が下がる
+* ShortStringsにgetterを用意する -> ShortStringsに変更を加えなければならない
+

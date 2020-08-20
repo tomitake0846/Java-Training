@@ -8,30 +8,30 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import controller.ConstructorItem;
+import controller.ConstructorInformation;
 import controller.Controller;
+import controller.argument.ArgumentItem;
 import gui.panels.UpdateDialog;
 import processing.interpret.InterpretException;
 
 public class ConstructorUpdateDialog extends UpdateDialog{
 
-	private ConstructorItem ci;
-	public ConstructorUpdateDialog(String title,ConstructorItem ci,Controller controller) {
+	private ConstructorInformation ci;
+	public ConstructorUpdateDialog(String title,ConstructorInformation ci,Controller controller) {
 		super(title,controller);
 		this.ci = ci;
 	}
 
 	protected JPanel getStatusPanel() {
-		JTextField[] fields = ci.getTextFields();
+		ArgumentItem[] items = ci.getArgumentItems();
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(UpdateDialog.preferredSize);
-		panel.setLayout(new GridLayout(1,fields.length));
+		panel.setLayout(new GridLayout(1,items.length));
 		panel.add(new JLabel(ci.getModifier()));
 		panel.add(new JLabel(ci.trimPackageName(ci.getConstructorName())));
-		for(JTextField field :fields) {
-			panel.add(field);
+		for(ArgumentItem item :items) {
+			panel.add(item.getComponent());
 		}
 		return panel;
 	}

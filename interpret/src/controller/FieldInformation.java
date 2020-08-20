@@ -2,24 +2,16 @@ package controller;
 
 import java.lang.reflect.Field;
 
-import javax.swing.JTextField;
-
-public class FieldItem extends Item{
+public class FieldInformation extends MemberInformation{
 
 	private Field field;
-	private static FieldItem selectedItem;
-	private JTextField textField;
+	private static FieldInformation selectedItem;
 	private String fieldValue;
 
-	public FieldItem(Field field,String fieldValue) {
+	public FieldInformation(Field field,String fieldValue) {
+		super(field.getType());
 		this.field = field;
-		this.textField = getInitialTextField();
 		this.fieldValue = fieldValue;
-	}
-
-	private JTextField getInitialTextField() {
-		JTextField textField = new JTextField(trimPackageName(getFieldType()));
-		return textField;
 	}
 
 	public String getFieldName() {
@@ -41,16 +33,12 @@ public class FieldItem extends Item{
 		return this.field;
 	}
 
-	public static FieldItem getSelectedItem() {
-		return FieldItem.selectedItem;
+	public static FieldInformation getSelectedItem() {
+		return FieldInformation.selectedItem;
 	}
 
 	public void selected() {
-		FieldItem.selectedItem = this;
-	}
-
-	public JTextField getTextField() {
-		return this.textField;
+		FieldInformation.selectedItem = this;
 	}
 
 }

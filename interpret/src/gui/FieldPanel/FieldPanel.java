@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import controller.Controller;
-import controller.FieldItem;
+import controller.FieldInformation;
 import gui.panels.MemberPanel;
 import processing.FieldInterface;
 import processing.interpret.InterpretException;
@@ -30,8 +30,14 @@ public class FieldPanel extends MemberPanel{
 
 		for(Field field : fields) {
 			String fieldName = field.getName();
-			FieldItem fi = new FieldItem(field,interpret.getFieldValue(fieldName).toString());
-			add(new FieldItemPanel(fi,getController()));
+			Object val = interpret.getFieldValue(fieldName);
+			FieldInformation fi;
+			if(val == null) {
+				fi = new FieldInformation(field,"null");
+			} else {
+				fi = new FieldInformation(field,val.toString());
+			}
+			add(new FieldInformationPanel(fi,getController()));
 		}
 	}
 }

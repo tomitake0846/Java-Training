@@ -6,5 +6,5 @@ import processing.interpret.InterpretException;
 
 public interface ConstructorInterface {
 	Constructor<?>[] getConstructors();
-	void Construct(Constructor<?> target,String...args) throws InterpretException;
+	void Construct(Constructor<?> target,Object...args) throws InterpretException;
 }

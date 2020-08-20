@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import controller.Controller;
-import controller.MethodItem;
+import controller.MethodInformation;
 import gui.panels.MemberPanel;
 import processing.MethodInterface;
 import processing.interpret.InterpretException;
@@ -29,8 +29,8 @@ public class MethodPanel extends MemberPanel{
 		Arrays.sort(methods,Comparator.comparing(Method::getName));
 
 		for(Method method : methods) {
-			MethodItem mi = new MethodItem(method);
-			add(new MethodItemPanel(mi,getController()));
+			MethodInformation mi = new MethodInformation(method);
+			add(new MethodInformationPanel(mi,getController()));
 		}
 	}
 }

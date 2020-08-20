@@ -12,26 +12,27 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.Controller;
-import controller.MethodItem;
+import controller.MethodInformation;
+import controller.argument.ArgumentItem;
 import gui.panels.UpdateDialog;
 import processing.interpret.InterpretException;
 
 public class MethodExecuteDialog extends UpdateDialog{
-	private MethodItem mi;
-	public MethodExecuteDialog(String title, MethodItem mi,Controller controller) {
+	private MethodInformation mi;
+	public MethodExecuteDialog(String title, MethodInformation mi,Controller controller) {
 		super(title,controller);
 		this.mi = mi;
 	}
 
 	protected JPanel getStatusPanel() {
-		JTextField[] fields = mi.getTextFields();
+		ArgumentItem[] items = mi.getArgumentItems();
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(UpdateDialog.preferredSize);
-		panel.setLayout(new GridLayout(1,fields.length));
+		panel.setLayout(new GridLayout(1,items.length));
 		panel.add(new JLabel(mi.getModifier()));
 		panel.add(new JLabel(mi.trimPackageName(mi.getMethodName())));
-		for(JTextField field :fields) {
-			panel.add(field);
+		for(ArgumentItem item :items) {
+			panel.add(item.getComponent());
 		}
 		return panel;
 	}
