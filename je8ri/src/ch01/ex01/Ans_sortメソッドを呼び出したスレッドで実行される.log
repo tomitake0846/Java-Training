@@ -1,0 +1,18 @@
+下記実行結果を確認
+呼び出し側であるMainスレッドのスレッドIDと、Comparator内のスレッドIDが一致した。
+
+実行結果
+
+Main Thread id :1
+before sort.
+[xxxid:6 : 6, xxxid:7 : 7, xxxid:8 : 8, xxxid:7 : 7, xxxid:2 : 2]
+Comparator Thread id :1
+Comparator Thread id :1
+Comparator Thread id :1
+Comparator Thread id :1
+Comparator Thread id :1
+Comparator Thread id :1
+Comparator Thread id :1
+Comparator Thread id :1
+after sort.
+[xxxid:2 : 2, xxxid:6 : 6, xxxid:7 : 7, xxxid:7 : 7, xxxid:8 : 8]
