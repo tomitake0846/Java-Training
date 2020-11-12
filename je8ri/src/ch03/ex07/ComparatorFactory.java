@@ -1,36 +1,36 @@
 package ch03.ex07;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.UnaryOperator;
 
 public class ComparatorFactory {
 
-	private List<UnaryOperator<String>> pendingOperations;
+	private UnaryOperator<String> blank = (s) -> s;
+	private Comparator<String> upperLowerCase = (s1,s2) -> s1.compareTo(s2);
+	private int ascOrDesc = 1;
 
-	//terminate
-	public Comparator<String> asc() {
-		return (s1,s2) -> s1.compareTo(s2);
+	public Comparator<String> sort() {
+		return (s1,s2) -> ascOrDesc * upperLowerCase.compare(blank.apply(s1),blank.apply(s2));
 	}
 
-	//terminate
-	public Comparator<String> desc() {
-		return (s1,s2) -> s2.compareTo(s1);
+	public ComparatorFactory asc() {
+		this.ascOrDesc = 1;
+		return this;
 	}
 
-
-	public Comparator<String> strictUpperLowerCase() {
-		return (s1,s2) -> s2.compareToIgnoreCase(s1);
+	public ComparatorFactory desc() {
+		this.ascOrDesc = -1;
+		return this;
 	}
 
-	public Comparator<String> ignoreUpperLowerCase() {
-		return (s1,s2) -> s2.compareTo(s1);
+	public ComparatorFactory strictUpperLowerCase() {
+		this.upperLowerCase = (s1,s2) -> s1.compareToIgnoreCase(s2);
+		return this;
 	}
 
-	public ComparatorFactory strictBlank() {
-
+	public ComparatorFactory removeBlank() {
+		this.blank = (s) -> s.replaceAll(" ","");
+		return this;
 	}
-	public ComparatorFactory ignoreBlank() {
 
-	}
 }
