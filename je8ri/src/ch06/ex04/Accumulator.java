@@ -37,4 +37,14 @@ public class Accumulator {
 
 		return la.get();
 	}
+
+//	public void test () {
+//		CompletableFuture<Void> links = CompletableFuture.supplyAsync(() -> 1)
+//				.thenAccept(System.out::println)
+//				.thenAccept(System.out::println);
+//
+//		CompletableFuture<Void> t = CompletableFuture.supplyAsync(() -> 1)
+//				.thenApply(v -> v * v)
+//				.thenAccept(System.out::println);
+//	}
 }
