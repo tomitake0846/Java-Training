@@ -1,0 +1,35 @@
+arraySize :2
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :4
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :8
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :16
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :32
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :64
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :128
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :256
+Arrays.sort         :0
+Arrays.ParallelSort :0
+
+arraySize :512
+Arrays.sort         :1
+Arrays.ParallelSort :0
