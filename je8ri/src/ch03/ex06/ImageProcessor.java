@@ -23,7 +23,7 @@ public class ImageProcessor{
 		return out;
 	}
 
-	public static void test(Image image) {
-		Image brightendImage = transform(image ,(c, factor) -> c.deriveColor(0,1,factor,1),1.2);
-	}
+//	public static void test(Image image) {
+//		Image brightendImage = transform(image ,(c, factor) -> c.deriveColor(0,1,factor,1),1.2);
+//	}
 }
