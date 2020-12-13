@@ -7,7 +7,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 public class ImageProcessor{
-	public static <T> Image transform(Image in,BiFunction<Color,T> f, T arg) {
+	public static <T> Image transform(Image in,BiFunction<Color,T,Color> f, T arg) {
 
 		int width = (int) in.getWidth();
 		int height = (int) in.getHeight();
@@ -16,14 +16,10 @@ public class ImageProcessor{
 
 		for(int x=0;x<width; x++) {
 			for(int y=0;y<height; y++) {
-//				out.getPixelWriter().setColor(x,y,f.apply(x,y,in.getPixelReader().getColor(x,y)));
+				out.getPixelWriter().setColor(x,y,f.apply(in.getPixelReader().getColor(x,y),arg));
 			}
 		}
-
 		return out;
 	}
 
-//	public static void test(Image image) {
-//		Image brightendImage = transform(image ,(c, factor) -> c.deriveColor(0,1,factor,1),1.2);
-//	}
 }
