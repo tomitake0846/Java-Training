@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3O//DTD W3 HTML 2.0//EN">
+<!Converted with LaTeX2HTML 95.1 (Fri Jan 20 1995) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds >
+<HEAD>
+<TITLE> URLクラスと openStream()</TITLE>
+</HEAD>
+<BODY>
+<meta name="description" value=" URLクラスと openStream()">
+<meta name="keywords" value="java">
+<meta name="resource-type" value="document">
+<meta name="distribution" value="global">
+<P>
+ <BR> <HR><A NAME=tex2html420 HREF="node20.html"><IMG ALIGN=BOTTOM ALT="next" SRC="../figs/next_motif.gif"></A>   <A NAME=tex2html418 HREF="node17.html"><IMG ALIGN=BOTTOM ALT="up" SRC="../figs/up_motif.gif"></A>   <A NAME=tex2html412 HREF="node18.html"><IMG ALIGN=BOTTOM ALT="previous" SRC="../figs/previous_motif.gif"></A>   <A NAME=tex2html422 HREF="node1.html"><IMG ALIGN=BOTTOM ALT="contents" SRC="../figs/contents_motif.gif"></A>      <BR>
+<B> Next:</B> <A NAME=tex2html421 HREF="node20.html"> URLConnection クラスと getInputStream()</A>
+<B>Up:</B> <A NAME=tex2html419 HREF="node17.html"> Stream</A>
+<B> Previous:</B> <A NAME=tex2html413 HREF="node18.html"> ストリームを使ったネットワーク・プログラミング</A>
+<BR> <HR> <P>
+<H1><A NAME=SECTION00420000000000000000> URLクラスと openStream()</A></H1>
+<P>
+次のプログラムを見てください。
+<P>
+新しいクラスは、おそらくURLだけだと思います。Java に興味を持っている
+人で、URLを知らない人はいないと思います。
+肝心なのは、次のシークエンスです。
+<P>
+
+<PRE>          URL u = new URL( src );
+          InputStream in = u.openStream() ;
+</PRE>
+
+<P>
+最初の文での srcはStringで、&quot;http://www.wakhok.ac.jp&quot; のように、URLが
+文字列の形式で入っています。問題は、次の文で、URLクラスのインスタンス u 
+に対して、openStream()というメソッドを適用すると、それだけで、そのURLを
+源とするストリームが作れてしまうのです。
+<P>
+いったんストリームが与えられれば、あとは、前回見たコピー・プログラムと
+ほとんど同じ考えで、インターネット上のURLで指定されるリソースの内容を
+表示する事が出来ます。<BR>
+<P>
+リスト1に、このプログラムの出力例をあげておきます。ここでは、
+URL : http://www.sun.com の内容が表示されています。<BR>
+<P>
+「ストリーム」という抽象のレベルでは、情報の流れに着目して、その端点の性格は
+捨象されています。ファイルの中味を表示する、例えば cat のような
+プログラムと、ネットワーク上のURLの中味を表示する、今回のJava でのサンプル・
+プログラムが、同じ構造を持つことは、ある意味では自然なことです。
+ただ、「ファイル入出力はファイル・ディスクリプタ、ネットワークはソケット」
+という、UNIX/Cのプログラムのスタイルでは、二つのプログラムの構造の同質性
+よりも、その違いが目立つことになります。
+<P>
+<PRE>****************************
+** UrlStream.java 
+****************************
+
+     1  import java.net.*;
+     2  import java.io.*;
+     3  
+     4  class UrlStream {
+     5    
+     6    UrlStream(String src){
+     7      try {
+     8  
+     9         URL u = new URL( src );
+    10         InputStream in = u.openStream() ;
+    11         byte buf[] = new byte[256];
+    12         int n;
+    13  
+    14         while((n = in.read(buf, 0, buf.length)) != -1){
+    15            System.out.write(buf,0,n);
+    16         }
+    17  
+    18      } catch (Exception e){
+    19         System.err.println(&quot;Exception : &quot;+e);
+    20      } 
+    21    }
+    22    
+    23    public static void main(String argv[]){
+    24      try {
+    25        UrlStream us = new UrlStream(argv[0]);
+    26      } catch (Exception e){
+    27         System.err.println(&quot;Exception (main) : &quot;+e);
+    28      } 
+    29       
+    30    }
+    31  }
+\begin{verbatim}
+\begin{small}
+
+\subsubsection{リスト1} 
+\begin{small}
+\begin{verbatim}
+sparc04$ java UrlStream http://www.sun.com  &lt;--- プログラムの実行
+&lt;!-- HEAD_START --&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;TITLE&gt;Sun Microsystems&lt;/TITLE&gt;
+&lt;META HTTP-EQUIV=&quot;Expires&quot; CONTENT=&quot;July 1996 21:29:02 GMT&quot;&gt;
+&lt;/HEAD&gt;
+
+&lt;body bgcolor=**ffffff vlink=**551a8b alink=**ff0000 link=**0000ee text=**000000&gt;
+&lt;!-- HEAD_END --&gt;
+
+&lt;A HREF=&quot;/960601/homepage.map&quot;&gt;&lt;IMG BORDER=0 SRC=&quot;/960601/homepage.6-1.gif&quot; ALT=&quot;Highly graphic homepage&quot; ISMAP WIDTH=580 HEIGHT=576&gt;&lt;/A&gt;
+
+&lt;center&gt;
+&lt;font size=+1&gt;&lt;strong&gt;Sun Unveils &lt;a href=/netra-nfs/index.html&gt;New Netra NFS Server &lt;/a&gt;&lt;/strong&gt;&lt;/font&gt;
+&lt;p&gt;Sun Microsystems &lt;A HREF=&quot;/960601/index.textonly.html&quot;&gt;text-only&lt;/A&gt; home page.
+A &lt;A HREF=&quot;/960601/index.java.html&quot;&gt;java&lt;/a&gt; version of the home page.
+&lt;/center&gt;
+
+
+&lt;!-- FOOT_START --&gt;
+&lt;HR&gt;
+&lt;FONT SIZE=2&gt; Questions or comments regarding this service?
+sun.com&lt;/EM&gt;&lt;/A&gt;&lt;/FONT&gt;
+&lt;P&gt;
+&lt;H5&gt;&lt;A HREF=&quot;/share/text/SMIcopyright.html&quot;&gt;Copyright&lt;/A&gt; 1996 Sun Microsystems, Inc., 2550 Garcia Ave., Mtn. View, Ca 94043-1100 USA.  All Rights Reserved&lt;/H5&gt;&lt;/BODY&gt;
+&lt;/HTML&gt;
+&lt;!-- FOOT_END --&gt;
+</PRE>
+<BR> <HR>
+<P><ADDRESS>
+maruyama@wakhok.ac.jp
+</ADDRESS>
+</BODY>

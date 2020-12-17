@@ -1,0 +1,4 @@
+BiFunction<? super U,? super T, U>とすると、第一引数に、identityの親クラスを渡せるようになる。
+
+集計処理にて、identityに渡したクラスで新規に定義されたメソッド等（仮にhogeとする）を使用している場合、
+BiFunctionの第一引数ではhogeが使用できず、集計処理実行時に何らかの実行時エラー（おそらくClassCastException）が発生すると思われる。
