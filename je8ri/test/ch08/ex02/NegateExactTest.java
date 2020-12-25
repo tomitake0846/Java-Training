@@ -10,5 +10,4 @@ class NegateExactTest {
 	void test() {
 		assertThrows(ArithmeticException.class,() -> Math.negateExact(2 << 31 -1));
 	}
-
 }
