@@ -1,4 +1,4 @@
-package dc3_1.view;
+package dc3_3.view.mainDisplay;
 
 import java.util.function.Consumer;
 
@@ -6,31 +6,21 @@ import dc3_3.model.Information;
 import dc3_3.model.InformationFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class DigitalClock extends Application {
+public class TimeDisplay extends Label {
 	private final Information time;
-	public DigitalClock() {
+	public TimeDisplay() {
 		this.time = InformationFactory.getTimeInstance();
-	}
-	@Override
-	public void start(Stage stage) {
-		Label timeLabel = new Label();
-		Timeline tl = getTimeline((s) -> timeLabel.setText(this.time.get()));
+
+		Timeline tl = getTimeline( (s) -> this.setText(this.time.get()));
 		tl.setCycleCount(Timeline.INDEFINITE);
 		tl.play();
-
-		timeLabel.setFont(new Font(60));
-		stage.setScene(new Scene(timeLabel));
-		stage.setTitle("Digital Clock");
-		stage.show();
+		this.setFont(new Font(60));
 	}
 
 	private Timeline getTimeline(Consumer<String> s) {
@@ -41,9 +31,5 @@ public class DigitalClock extends Application {
 			}
 		}));
 		return t;
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 }
