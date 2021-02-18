@@ -6,11 +6,13 @@ import dc3_3.model.Information;
 import dc3_3.model.InformationFactory;
 import dc3_3.model.UserConfig;
 import dc3_3.view.DigitalClock;
+import dc3_3.view.config.UserContextMenu;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -22,10 +24,15 @@ public class TimeDisplay extends Label {
 	public TimeDisplay() {
 		this.time = InformationFactory.getTimeInstance();
 
+		// display settig
 		Timeline tl = getTimeline( (s) -> this.setText(this.time.get()));
 		tl.setCycleCount(Timeline.INDEFINITE);
 		tl.play();
+
+		// event setting
+		setOpenContextMenuEvent();
 	}
+
 
 	private Timeline getTimeline(Consumer<String> s) {
 		Timeline t = new Timeline(new KeyFrame(Duration.millis(100),new EventHandler<ActionEvent>() {
@@ -41,5 +48,18 @@ public class TimeDisplay extends Label {
 			}
 		}));
 		return t;
+	}
+
+	//set Event for open Context Menu
+	private void setOpenContextMenuEvent() {
+		setOnMousePressed(e -> {
+			ContextMenu context = UserContextMenu.getContext();
+			if(context.isShowing()) {
+				context.hide();
+			}
+			if(e.isSecondaryButtonDown()) {
+				context.show(this,e.getScreenX(),e.getScreenY());
+			}
+		});
 	}
 }

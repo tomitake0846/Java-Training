@@ -22,6 +22,7 @@ public class UserContextMenu {
 		return UserContextMenu.context;
 	}
 
+
 	private static ContextMenu _init() {
 		ContextMenu context = new ContextMenu();
 		context.getItems().add(getFontFamilyMenu());
