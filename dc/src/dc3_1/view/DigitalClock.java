@@ -2,8 +2,8 @@ package dc3_1.view;
 
 import java.util.function.Consumer;
 
-import dc3_1.model.Information;
-import dc3_1.model.InformationFactory;
+import dc3_3.model.Information;
+import dc3_3.model.InformationFactory;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
