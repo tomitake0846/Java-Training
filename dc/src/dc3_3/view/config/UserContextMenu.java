@@ -29,6 +29,7 @@ public class UserContextMenu {
 		context.getItems().add(getFontSizeMenu());
 		context.getItems().add(getCharColorMenu());
 		context.getItems().add(getBackGroundColorMenu());
+		context.getItems().add(getCloseMenuItem());
 		return context;
 	}
 
@@ -75,5 +76,13 @@ public class UserContextMenu {
 			menu.getItems().add(item);
 		}
 		return menu;
+	}
+
+	private static MenuItem getCloseMenuItem() {
+		MenuItem item = new MenuItem("Exit");
+		item.setOnAction(e -> {
+			System.exit(0);
+		});
+		return item;
 	}
 }
