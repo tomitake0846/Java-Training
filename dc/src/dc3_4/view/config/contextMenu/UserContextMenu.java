@@ -1,4 +1,4 @@
-package dc3_4.view.config;
+package dc3_4.view.config.contextMenu;
 
 import java.util.function.Consumer;
 
@@ -96,4 +96,5 @@ public class UserContextMenu {
 		});
 		return item;
 	}
+
 }

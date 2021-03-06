@@ -2,11 +2,12 @@ package dc3_4.view;
 
 import dc3_4.model.config.ExtendedPreference;
 import dc3_4.model.config.UserConfig;
+import dc3_4.view.config.menuBar.DCMenuBar;
 import dc3_4.view.mainDisplay.TimeDisplay;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class DigitalClock extends Application {
 
@@ -18,22 +19,28 @@ public class DigitalClock extends Application {
 		DigitalClock.exitEvent = exitEvent(stage);
 		DigitalClock.USER_CONFIG_PREFERENCE.loadConfig();
 
-		TimeDisplay td = new TimeDisplay();
-		stage.setScene(new Scene(td,config.getClockWidth(),config.getClockHeight()));
-		td.setOnMouseDragged(e -> {
-			if(e.isPrimaryButtonDown()) {
-				stage.setX(e.getScreenX());
-				stage.setY(e.getScreenY());
-			}
-		});
+		VBox box = new VBox();
+		Scene scene = new Scene(box,config.getClockWidth(),config.getClockHeight());
 
-		stage.initStyle(StageStyle.UNDECORATED);
+		//MenubarInit
+		box.getChildren().addAll(DCMenuBar.getInstance());
+
+		//TimeDisplay init
+		TimeDisplay td = new TimeDisplay();
+		td.moveProcessingInit(stage::setX, stage::setY,stage::getX,stage::getY);
+		box.getChildren().addAll(td);
+
+		stage.setScene(scene);
 		stage.setTitle(DigitalClock.config.getClockTitle());
 		stage.setX(config.X());
 		stage.setY(config.Y());
+		stage.setOnCloseRequest(e -> {
+			exitEvent.run();
+		});
 
 		stage.show();
 	}
+
 	private Runnable exitEvent(Stage stage) {
 		return () -> {
 			config.setX(stage.getX());
@@ -46,4 +53,5 @@ public class DigitalClock extends Application {
 	public void start(String... args) {
 		launch(args);
 	}
+
 }

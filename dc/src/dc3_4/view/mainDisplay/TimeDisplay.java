@@ -1,12 +1,13 @@
 package dc3_4.view.mainDisplay;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import dc3_4.model.config.UserConfig;
 import dc3_4.model.display.Information;
 import dc3_4.model.display.InformationFactory;
 import dc3_4.view.DigitalClock;
-import dc3_4.view.config.UserContextMenu;
+import dc3_4.view.config.contextMenu.UserContextMenu;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -61,5 +62,38 @@ public class TimeDisplay extends Label {
 				context.show(this,e.getScreenX(),e.getScreenY());
 			}
 		});
+	}
+
+	//label move processing
+	private delta d;
+	public void moveProcessingInit(Consumer<Double> moveTargetXSetter, Consumer<Double> moveTargetYSetter,
+			Supplier<Double> moveTargetXGetter,Supplier<Double> moveTargetYGetter) {
+
+		this.setOnDragDetected(e -> {
+			this.startFullDrag();
+		});
+
+		this.setOnMouseDragged(e -> {
+			if(e.isPrimaryButtonDown()) {
+				if(d == null) {
+					d = new delta();
+					d.dx = e.getScreenX() - moveTargetXGetter.get();
+					d.dy = e.getScreenY() - moveTargetYGetter.get();
+				}
+				moveTargetXSetter.accept(e.getScreenX() - d.dx);
+				moveTargetYSetter.accept(e.getScreenY() - d.dy);
+				e.consume();
+			}
+		});
+
+		this.setOnMouseDragReleased(e -> {
+			d = null;
+			e.consume();
+		});
+	}
+
+	private class delta {
+		private double dx;
+		private double dy;
 	}
 }
