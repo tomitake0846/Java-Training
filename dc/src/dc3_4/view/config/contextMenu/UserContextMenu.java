@@ -1,9 +1,10 @@
-package dc3_3.view.config;
+package dc3_4.view.config.contextMenu;
 
 import java.util.function.Consumer;
 
-import dc3_3.model.UserConfig;
-import dc3_3.view.DigitalClock;
+import dc3_4.controller.config.ConfigUpdater;
+import dc3_4.model.config.UserConfig;
+import dc3_4.view.DigitalClock;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -30,6 +31,7 @@ public class UserContextMenu {
 		context.getItems().add(getCharColorMenu());
 		context.getItems().add(getBackGroundColorMenu());
 		context.getItems().add(getCloseMenuItem());
+		context.getItems().add(getResetMenuItem());
 		return context;
 	}
 
@@ -38,7 +40,7 @@ public class UserContextMenu {
 		for (String family : Font.getFamilies()) {
 			MenuItem item = new MenuItem(family);
 			item.setOnAction(e -> {
-				DigitalClock.config.setFontFamily(family);
+				ConfigUpdater.fontFamilyUpdater().accept(family);
 			});
 			menu.getItems().add(item);
 		}
@@ -51,7 +53,7 @@ public class UserContextMenu {
 		for(double fontSize : fontSizeArray) {
 			MenuItem item = new MenuItem((int)fontSize+"");
 			item.setOnAction(e -> {
-				DigitalClock.config.setFontSize((int)fontSize+"");
+				ConfigUpdater.fontSizeUpdater().accept(fontSize);
 			});
 			menu.getItems().add(item);
 		}
@@ -59,11 +61,11 @@ public class UserContextMenu {
 	}
 
 	private static Menu getCharColorMenu() {
-		return getColorMenu(UserConfig.CHAR_COLOR,c -> DigitalClock.config.setCharColor(c));
+		return getColorMenu(UserConfig.CHAR_COLOR, ConfigUpdater.charColorUpdater());
 	}
 
 	private static Menu getBackGroundColorMenu() {
-		return getColorMenu(UserConfig.BG_COLOR,c -> DigitalClock.config.setBGColor(c));
+		return getColorMenu(UserConfig.BG_COLOR, ConfigUpdater.BGColorUpdater());
 	}
 
 	private static Menu getColorMenu(String itemName,Consumer<String> consumer) {
@@ -81,8 +83,18 @@ public class UserContextMenu {
 	private static MenuItem getCloseMenuItem() {
 		MenuItem item = new MenuItem("Exit");
 		item.setOnAction(e -> {
-			System.exit(0);
+			DigitalClock.exitEvent.run();
 		});
 		return item;
 	}
+
+	private static MenuItem getResetMenuItem() {
+		MenuItem item = new MenuItem("reset");
+		item.setOnAction(e -> {
+			ConfigUpdater.reseter().run();
+
+		});
+		return item;
+	}
+
 }
