@@ -6,7 +6,7 @@ import dc3_4.view.config.menuBar.DCMenuBar;
 import dc3_4.view.mainDisplay.TimeDisplay;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class DigitalClock extends Application {
@@ -19,16 +19,19 @@ public class DigitalClock extends Application {
 		DigitalClock.exitEvent = exitEvent(stage);
 		DigitalClock.USER_CONFIG_PREFERENCE.loadConfig();
 
-		VBox box = new VBox();
-		Scene scene = new Scene(box,config.getClockWidth(),config.getClockHeight());
+		BorderPane bp = new BorderPane();
+		Scene scene = new Scene(bp,config.getClockWidth(),config.getClockHeight());
 
 		//MenubarInit
-		box.getChildren().addAll(DCMenuBar.getInstance());
+		bp.setTop(DCMenuBar.getInstance());
 
 		//TimeDisplay init
 		TimeDisplay td = new TimeDisplay();
 		td.moveProcessingInit(stage::setX, stage::setY,stage::getX,stage::getY);
-		box.getChildren().addAll(td);
+		td.heightProptery().bind(stage.heightProperty());
+		td.widthProptery().bind(stage.widthProperty());
+
+		bp.setCenter(td);
 
 		stage.setScene(scene);
 		stage.setTitle(DigitalClock.config.getClockTitle());
