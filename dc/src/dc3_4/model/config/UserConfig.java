@@ -1,6 +1,12 @@
 package dc3_4.model.config;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import dc3_4.model.utils.JsonProcessor;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -10,6 +16,7 @@ public final class UserConfig{
 	private static final UserConfig instance = new UserConfig();
 
 	public static final String FONT_FAMILY = "Font Family";
+	public static final String FONT_NAME = "Font Name";
 	public static final String FONT_SIZE = "Font Size";
 	public static final String CHAR_COLOR = "Character Color";
 	public static final String BG_COLOR = "BackGround Color";
@@ -131,5 +138,36 @@ public final class UserConfig{
 		clockHeight = UserConfig.DEFAULT_CLOCK_HEIGHT;
 		x = UserConfig.DEFAULT_X;
 		y = UserConfig.DEFAULT_Y;
+	}
+
+	public String toJson() throws JsonProcessingException {
+		Map<String,String> map = new HashMap<>();
+		map.put(FONT_FAMILY, getFontFamily());
+		map.put(FONT_NAME, getFontName());
+		map.put(FONT_SIZE, ""+getFontSize());
+		map.put(CHAR_COLOR, getCharColor());
+		map.put(BG_COLOR, getBGColor());
+		map.put(X, ""+X());
+		map.put(Y, ""+Y());
+		return JsonProcessor.toJsonFormat(map);
+	}
+
+	public boolean loadFromJson(String json) {
+		Map<String,String> config = null;
+		try {
+			config = JsonProcessor.jsonToMap(json);
+			setFontFamily(config.get(FONT_FAMILY));
+			setFontName(config.get(FONT_NAME));
+			setFontSize(config.get(FONT_SIZE));
+			setCharColor(config.get(CHAR_COLOR));
+			setBGColor(config.get(BG_COLOR));
+			setX(Double.parseDouble(config.get(X)));
+			setY(Double.parseDouble(config.get(Y)));
+		} catch (JsonProcessingException e) {
+			throw new IllegalStateException("failed json parse :"+json);
+		} catch (NumberFormatException e) {
+			throw new IllegalStateException("X:"+config.get(X)+ " or Y:" + config.get(Y) +"are not a number.");
+		}
+		return true;
 	}
 }
