@@ -152,9 +152,11 @@ public final class UserConfig{
 		return JsonProcessor.toJsonFormat(map);
 	}
 
-	public boolean loadFromJson(String json) {
+	public void loadFromJson(String json) {
 		Map<String,String> config = null;
+		System.out.println(json);
 		try {
+			System.out.println(JsonProcessor.jsonToMap(json));
 			config = JsonProcessor.jsonToMap(json);
 			setFontFamily(config.get(FONT_FAMILY));
 			setFontName(config.get(FONT_NAME));
@@ -168,6 +170,5 @@ public final class UserConfig{
 		} catch (NumberFormatException e) {
 			throw new IllegalStateException("X:"+config.get(X)+ " or Y:" + config.get(Y) +"are not a number.");
 		}
-		return true;
 	}
 }

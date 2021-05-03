@@ -1,11 +1,20 @@
 package dc3_4;
 
-import dc3_4.view.DigitalClock;
+import dc3_4.view.LoginDialog;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public class dc3_4Main {
+public class dc3_4Main extends Application{
 
 	public static void main(String[] args) {
-		new DigitalClock().start(args);
+//		new DigitalClock().start(args);
+//		LoginDialog.getInstance().show();
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		LoginDialog.getInstance().show();
 	}
 
 }

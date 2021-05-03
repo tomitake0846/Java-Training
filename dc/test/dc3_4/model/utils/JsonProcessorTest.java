@@ -30,14 +30,14 @@ class JsonProcessorTest {
 		Map<String,String> map = JsonProcessor.jsonToMap(response);
 		Map<String,String> user = JsonProcessor.jsonToMap(map.get("user"));
 
-		assertEquals("{favorites=[\"soccer\",\"puzzle\"], score={\"kokugo\":\"good\",\"sansuu\":100}, name=\"Pompom Pudding\"}",user.toString());
+		assertEquals("{favorites=[\"soccer\",\"puzzle\"], score={\"kokugo\":\"good\",\"sansuu\":100}, name=Pompom Pudding}",user.toString());
 		for(String key :user.keySet()) {
 //			System.out.println(key + ":"+user.get(key));
 
 			switch(key) {
 			case "favorites": assertEquals("[\"soccer\",\"puzzle\"]",user.get(key));break;
 			case "score": assertEquals("{\"kokugo\":\"good\",\"sansuu\":100}",user.get(key));break;
-			case "name": assertEquals("\"Pompom Pudding\"",user.get(key));break;
+			case "name": assertEquals("Pompom Pudding",user.get(key));break;
 			default : fail("undefined key");
 			}
 		}
@@ -49,6 +49,19 @@ class JsonProcessorTest {
 		body.put("user-id", "admin");
 		body.put("password", "admin");
 		assertEquals("{\"password\":\"admin\",\"user-id\":\"admin\"}",JsonProcessor.toJsonFormat(body));
+	}
+
+	@Test
+	void jsonToMapSuccess() throws JsonProcessingException {
+		String json = "{\"Font Family\":\"Serif\",\"Font Size\":\"40.0\",\"X coordinate\":\"200.0\",\"BackGround Color\":\"black\",\"Character Color\":\"white\",\"Y coordinate\":\"200.0\",\"Font Name\":\"ITALIC\"}";
+		Map<String,String> map = JsonProcessor.jsonToMap(json);
+		assertEquals("ITALIC",map.get("Font Name"));
+		assertEquals("Serif",map.get("Font Family"));
+		assertEquals("40.0",map.get("Font Size"));
+		assertEquals("200.0",map.get("X coordinate"));
+		assertEquals("white",map.get("Character Color"));
+		assertEquals("black",map.get("BackGround Color"));
+		assertEquals("200.0",map.get("Y coordinate"));
 	}
 
 }

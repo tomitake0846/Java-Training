@@ -20,6 +20,14 @@ public class JsonProcessor {
 		for(Object str : root.keySet()) {
 			String key = str.toString();
 			String val = mapper.writeValueAsString(root.get(str));
+			if(val.startsWith("\"")) {
+				val = val.replaceFirst("\"", "");
+			}
+			if(val.endsWith("\"")) {
+				val = val.replaceFirst("\"", "");
+				val = val.substring(0, val.length());
+			}
+
 			map.put(key, val);
 		}
 
