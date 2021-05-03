@@ -87,6 +87,27 @@ public class RESTLogic {
 		} catch (IOException e) {
 			whenFailed.accept(e.getMessage());
 		}
+	}
 
+	public static void update(String userID,Consumer<String> whenFailed) {
+		if(userID == null || userID.isEmpty()) {
+			whenFailed.accept("user id is empty.");
+			return;
+		}
+
+		UserConfig userConfig = UserConfig.getInstance();
+		try {
+			String json = userConfig.toJson();
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("user-id", userID);
+			map.put("config", json);
+			Map<String,String> result = ResourceAccess.connect(RESTResources.update, map);
+			if(!result.get("statusCode").equals("200")) {
+				whenFailed.accept(result.get("body"));
+			}
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 	}
 }

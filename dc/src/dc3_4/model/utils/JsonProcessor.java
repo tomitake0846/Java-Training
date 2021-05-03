@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,18 +16,14 @@ public class JsonProcessor {
 		mapper.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
 
 		@SuppressWarnings("rawtypes")
-		Map root = mapper.readValue(json,Map.class);
+		Map root = mapper.readValue(json,new TypeReference<HashMap<String,String>>(){});
+		System.out.println(root);
 
 		for(Object str : root.keySet()) {
 			String key = str.toString();
-			String val = mapper.writeValueAsString(root.get(str));
-			if(val.startsWith("\"")) {
-				val = val.replaceFirst("\"", "");
-			}
-			if(val.endsWith("\"")) {
-				val = val.replaceFirst("\"", "");
-				val = val.substring(0, val.length());
-			}
+			String val = root.get(key).toString();
+
+			System.out.println(key + ":" + val);
 
 			map.put(key, val);
 		}

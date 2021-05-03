@@ -166,6 +166,7 @@ public final class UserConfig{
 			setX(Double.parseDouble(config.get(X)));
 			setY(Double.parseDouble(config.get(Y)));
 		} catch (JsonProcessingException e) {
+			System.err.println(e.getMessage());
 			throw new IllegalStateException("failed json parse :"+json);
 		} catch (NumberFormatException e) {
 			throw new IllegalStateException("X:"+config.get(X)+ " or Y:" + config.get(Y) +"are not a number.");

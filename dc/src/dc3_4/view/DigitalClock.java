@@ -1,6 +1,6 @@
 package dc3_4.view;
 
-import dc3_4.model.config.ExtendedPreference;
+import dc3_4.controller.RESTLogic.RESTLogic;
 import dc3_4.model.config.UserConfig;
 import dc3_4.view.config.menuBar.DCMenuBar;
 import dc3_4.view.mainDisplay.TimeDisplay;
@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 public class DigitalClock extends Stage{
 
 	public static final UserConfig config = UserConfig.getInstance();
-	public static final ExtendedPreference USER_CONFIG_PREFERENCE = new ExtendedPreference();
 	public static Runnable exitEvent = () -> {throw new IllegalStateException();};
 
 	private static DigitalClock clock;
@@ -24,7 +23,6 @@ public class DigitalClock extends Stage{
 
 	private DigitalClock() {
 		DigitalClock.exitEvent = exitEvent(this);
-		DigitalClock.USER_CONFIG_PREFERENCE.loadConfig();
 
 		BorderPane bp = new BorderPane();
 		Scene scene = new Scene(bp,config.getClockWidth(),config.getClockHeight());
@@ -53,7 +51,11 @@ public class DigitalClock extends Stage{
 		return () -> {
 			config.setX(stage.getX());
 			config.setY(stage.getY());
-			USER_CONFIG_PREFERENCE.updateConfig();
+
+			//userData == userID
+			String userID = (String)LoginDialog.getInstance().getUserData();
+			RESTLogic.update(userID,
+					errMsg -> Popup.showInfoPopup(errMsg));
 			System.exit(0);
 		};
 	}

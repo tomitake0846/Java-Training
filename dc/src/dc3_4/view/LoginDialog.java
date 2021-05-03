@@ -76,12 +76,15 @@ public class LoginDialog extends Stage {
 			//else, proceed to load config.
 			RESTLogic.login(userID, password,
 					errMsg -> Popup.showInfoPopup(errMsg) ,
-					id -> RESTLogic.config(id,
+					id -> {
+						this.setUserData(userID);
+						RESTLogic.config(id,
 							errMsg -> Popup.showInfoPopup(errMsg),
 							() -> {
 								this.hide();
 								DigitalClock.getInstance().show();
-							}));
+							});
+					});
 		});
 		return button;
 	}
@@ -94,5 +97,4 @@ public class LoginDialog extends Stage {
 		});
 		return button;
 	}
-
 }
