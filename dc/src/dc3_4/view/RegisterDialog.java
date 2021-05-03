@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -26,8 +27,8 @@ public class RegisterDialog extends Stage {
 		BorderPane border = new BorderPane();
 
 		TextField userIDField = new TextField();
-		TextField passwordField = new TextField();
-		TextField cofirmPasswordField = new TextField();
+		TextField passwordField = new PasswordField();
+		TextField cofirmPasswordField = new PasswordField();
 
 		border.setCenter(getRegisterFormPane(userIDField,passwordField,cofirmPasswordField));
 		border.setBottom(getButtonHBox(userIDField,passwordField,cofirmPasswordField));
@@ -86,7 +87,6 @@ public class RegisterDialog extends Stage {
 					config -> {
 						UserConfig userConfig = UserConfig.getInstance();
 						userConfig.loadFromJson(config);
-						//TODO
 						this.hide();
 						DigitalClock.getInstance().show();
 

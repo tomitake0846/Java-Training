@@ -154,9 +154,7 @@ public final class UserConfig{
 
 	public void loadFromJson(String json) {
 		Map<String,String> config = null;
-		System.out.println(json);
 		try {
-			System.out.println(JsonProcessor.jsonToMap(json));
 			config = JsonProcessor.jsonToMap(json);
 			setFontFamily(config.get(FONT_FAMILY));
 			setFontName(config.get(FONT_NAME));

@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 public class dc3_4Main extends Application{
 
 	public static void main(String[] args) {
-//		new DigitalClock().start(args);
-//		LoginDialog.getInstance().show();
 		launch(args);
 	}
 

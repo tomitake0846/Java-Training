@@ -14,7 +14,6 @@ class GET implements HTTPMethod{
 		if(!payload.isEmpty()) {
 			uri += "?" + payload;
 		}
-		System.out.println(uri);
 		HttpURLConnection conn = (HttpURLConnection) new URL(uri).openConnection();
 
         get(conn);

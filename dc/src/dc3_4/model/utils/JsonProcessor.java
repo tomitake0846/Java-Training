@@ -17,14 +17,10 @@ public class JsonProcessor {
 
 		@SuppressWarnings("rawtypes")
 		Map root = mapper.readValue(json,new TypeReference<HashMap<String,String>>(){});
-		System.out.println(root);
 
 		for(Object str : root.keySet()) {
 			String key = str.toString();
 			String val = root.get(key).toString();
-
-			System.out.println(key + ":" + val);
-
 			map.put(key, val);
 		}
 
