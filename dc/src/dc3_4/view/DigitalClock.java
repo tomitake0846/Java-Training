@@ -1,23 +1,28 @@
 package dc3_4.view;
 
-import dc3_4.model.config.ExtendedPreference;
+import dc3_4.controller.RESTLogic.RESTLogic;
 import dc3_4.model.config.UserConfig;
 import dc3_4.view.config.menuBar.DCMenuBar;
 import dc3_4.view.mainDisplay.TimeDisplay;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class DigitalClock extends Application {
+public class DigitalClock extends Stage{
 
 	public static final UserConfig config = UserConfig.getInstance();
-	public static final ExtendedPreference USER_CONFIG_PREFERENCE = new ExtendedPreference();
 	public static Runnable exitEvent = () -> {throw new IllegalStateException();};
-	@Override
-	public void start(Stage stage) {
-		DigitalClock.exitEvent = exitEvent(stage);
-		DigitalClock.USER_CONFIG_PREFERENCE.loadConfig();
+
+	private static DigitalClock clock;
+	public static Stage getInstance() {
+		if(clock == null) {
+			clock = new DigitalClock();
+		}
+		return clock;
+	}
+
+	private DigitalClock() {
+		DigitalClock.exitEvent = exitEvent(this);
 
 		BorderPane bp = new BorderPane();
 		Scene scene = new Scene(bp,config.getClockWidth(),config.getClockHeight());
@@ -27,34 +32,32 @@ public class DigitalClock extends Application {
 
 		//TimeDisplay init
 		TimeDisplay td = new TimeDisplay();
-		td.moveProcessingInit(stage::setX, stage::setY,stage::getX,stage::getY);
-		td.heightProptery().bind(stage.heightProperty());
-		td.widthProptery().bind(stage.widthProperty());
+		td.moveProcessingInit(this::setX, this::setY,this::getX,this::getY);
+		td.heightProptery().bind(this.heightProperty());
+		td.widthProptery().bind(this.widthProperty());
 
 		bp.setCenter(td);
 
-		stage.setScene(scene);
-		stage.setTitle(DigitalClock.config.getClockTitle());
-		stage.setX(config.X());
-		stage.setY(config.Y());
-		stage.setOnCloseRequest(e -> {
+		this.setScene(scene);
+		this.setTitle(DigitalClock.config.getClockTitle());
+		this.setX(config.X());
+		this.setY(config.Y());
+		this.setOnCloseRequest(e -> {
 			exitEvent.run();
 		});
-
-		stage.show();
 	}
 
 	private Runnable exitEvent(Stage stage) {
 		return () -> {
 			config.setX(stage.getX());
 			config.setY(stage.getY());
-			USER_CONFIG_PREFERENCE.updateConfig();
+
+			//userData == userID
+			String userID = (String)LoginDialog.getInstance().getUserData();
+			RESTLogic.update(userID,
+					errMsg -> Popup.showInfoPopup(errMsg));
 			System.exit(0);
 		};
-	}
-
-	public void start(String... args) {
-		launch(args);
 	}
 
 }

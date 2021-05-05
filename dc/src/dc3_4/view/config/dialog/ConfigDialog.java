@@ -1,6 +1,10 @@
 package dc3_4.view.config.dialog;
 
+import dc3_4.controller.RESTLogic.RESTLogic;
 import dc3_4.model.config.UserConfig;
+import dc3_4.view.DigitalClock;
+import dc3_4.view.LoginDialog;
+import dc3_4.view.Popup;
 import dc3_4.view.config.dialog.configDialogComponent.ChoiceBoxSupplier;
 import dc3_4.view.config.dialog.configDialogComponent.ColorPickerSupplier;
 import javafx.geometry.HPos;
@@ -90,7 +94,13 @@ public final class ConfigDialog extends Stage {
 		updateButton.setOnAction(e -> {
 			ChoiceBoxSupplier.update();
 			ColorPickerSupplier.update();
+
+			String userID = (String)LoginDialog.getInstance().getUserData();
+			RESTLogic.update(userID,
+					errMsg -> Popup.showInfoPopup(errMsg));
+
 			this.hide();
+			DigitalClock.getInstance().show();
 		});
 		updateButton.setPrefSize(80, 20);
 		return updateButton;
